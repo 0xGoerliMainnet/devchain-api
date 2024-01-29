@@ -46,6 +46,7 @@ async function load_fastify(options: any): Promise<FastifyInstance> {
       'https://' + config.env.URL_UI,
       'https://www.' + config.env.URL_UI,
       'https://admin.' + config.env.URL_UI,
+      'https://swap.' + config.env.URL_UI,
     ],
   });
 
