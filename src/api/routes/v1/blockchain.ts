@@ -322,6 +322,10 @@ function bind_blockchain_routes(
 
           reply.send(result);
         } catch (err: any) {
+          if (err.response) {
+            return reply.status(422).send(err.response.data);
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -352,6 +356,10 @@ function bind_blockchain_routes(
 
           reply.send(result);
         } catch (err: any) {
+          if (err.response) {
+            return reply.status(422).send(err.response.data);
+          }
+
           reply.status(422).send(err);
         }
       },
