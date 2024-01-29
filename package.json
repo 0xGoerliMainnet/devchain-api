@@ -1,7 +1,7 @@
 {
-  "name": "devchain",
+  "name": "devchain-api",
   "version": "1.1.0",
-  "description": "Scalable & Stable Fastify Server Architecture with Secure Cookie Based Authentication.",
+  "description": "Web3 based server infrastructure with scalable and secure solutions for blockchain APIs. Powered by Fastify, GoPlusLabs, 0x API & much more.",
   "main": "src/index.ts",
   "scripts": {
     "start": "node build/index.js",
@@ -16,7 +16,7 @@
     "cookie",
     "fastify"
   ],
-  "author": "DevChain.net",
+  "author": "Developer Chain Network",
   "license": "MIT",
   "dependencies": {
     "@fastify/cookie": "^9.1.0",

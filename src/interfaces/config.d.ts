@@ -32,6 +32,12 @@ export default interface config_i {
     readonly products: string;
     readonly products_favs: string;
 
+    // BLOCKCHAIN ENDPOINTS
+
+    //tokens
+    readonly blockchain_tokens: string;
+
+    // GoPlusLabs
     readonly blockchain_token_security: string;
     readonly blockchain_address_security: string;
     readonly blockchain_approval_security: string;
@@ -40,6 +46,10 @@ export default interface config_i {
     readonly blockchain_pishing_site: string;
     readonly blockchain_rugpull_detecting: string;
     readonly blockchain_input_decode: string;
+
+    // 0x API
+    readonly blockchain_swap_quote: string;
+    readonly blockchain_swap_price: string;
   };
   readonly env: {
     readonly PORT: string;
@@ -59,6 +69,7 @@ export default interface config_i {
     readonly URL_API: string;
     readonly URL_UI: string;
     readonly SECRET_KEY_CAPTCHA: string;
+    readonly API_KEY_0X: string;
   };
   readonly roles: {
     readonly admin: roles_t;

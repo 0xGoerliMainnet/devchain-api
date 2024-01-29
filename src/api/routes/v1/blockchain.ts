@@ -29,7 +29,33 @@ function bind_blockchain_routes(
     // #state: Public
     // #desc: Check if request has session and user, response: IProfile | null
 
-    // #service: GoPlusLabs
+    // #service: CoinGecko.com
+    get_tokens: {
+      method: 'GET',
+      url: '/v1' + config.endpoints.blockchain_tokens,
+      schema: {
+        querystring: {
+          search: { type: config.types.string },
+        },
+      },
+      //preValidation: mw.prevalidation(null, options),
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          chain: request.params.chain,
+          search: request.query.search,
+        };
+
+        try {
+          const tokens = await services.blockchain.get_tokens(credentials);
+
+          reply.send(tokens);
+        } catch (err: any) {
+          reply.status(422).send(err);
+        }
+      },
+    },
+
+    // #service: GoPlusLabs.io
     get_token_security: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_token_security,
@@ -60,7 +86,7 @@ function bind_blockchain_routes(
       },
     },
 
-    // #service: GoPlusLabs
+    // #service: GoPlusLabs.io
     get_address_security: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_address_security,
@@ -91,7 +117,7 @@ function bind_blockchain_routes(
       },
     },
 
-    // #service: GoPlusLabs
+    // #service: GoPlusLabs.io
     get_approval_security: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_approval_security,
@@ -122,7 +148,7 @@ function bind_blockchain_routes(
       },
     },
 
-    // #service: GoPlusLabs
+    // #service: GoPlusLabs.io
     get_nft_security: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_nft_security,
@@ -157,7 +183,7 @@ function bind_blockchain_routes(
       },
     },
 
-    // #service: GoPlusLabs
+    // #service: GoPlusLabs.io
     get_dapp_security: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_dapp_security,
@@ -185,7 +211,7 @@ function bind_blockchain_routes(
       },
     },
 
-    // #service: GoPlusLabs
+    // #service: GoPlusLabs.io
     check_phishing_site: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_pishing_site,
@@ -213,7 +239,7 @@ function bind_blockchain_routes(
       },
     },
 
-    // #service: GoPlusLabs
+    // #service: GoPlusLabs.io
     check_rugpull_detecting: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_rugpull_detecting,
@@ -244,7 +270,7 @@ function bind_blockchain_routes(
       },
     },
 
-    // #service: GoPlusLabs
+    // #service: GoPlusLabs.io
     input_decode: {
       method: 'POST',
       url: '/v1' + config.endpoints.blockchain_input_decode,
@@ -265,6 +291,66 @@ function bind_blockchain_routes(
           );
 
           reply.send(res.data);
+        } catch (err: any) {
+          reply.status(422).send(err);
+        }
+      },
+    },
+
+    // #service: 0x.org
+    swap_quote: {
+      method: 'GET',
+      url: '/v1' + config.endpoints.blockchain_swap_quote,
+      schema: {
+        querystring: {
+          buyToken: { type: config.types.string },
+          sellToken: { type: config.types.string },
+          sellAmount: { type: config.types.string },
+          value: { type: config.types.string },
+          data: { type: config.types.string },
+        },
+      },
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          ...request.query,
+          chain: request.params.chain,
+          url: request.url,
+        };
+
+        try {
+          const result = await services.blockchain.swap_quote(credentials);
+
+          reply.send(result);
+        } catch (err: any) {
+          reply.status(422).send(err);
+        }
+      },
+    },
+
+    // #service: 0x.org
+    swap_price: {
+      method: 'GET',
+      url: '/v1' + config.endpoints.blockchain_swap_price,
+      schema: {
+        querystring: {
+          buyToken: { type: config.types.string },
+          sellToken: { type: config.types.string },
+          sellAmount: { type: config.types.string },
+          value: { type: config.types.string },
+          data: { type: config.types.string },
+        },
+      },
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          ...request.query,
+          chain: request.params.chain,
+          url: request.url,
+        };
+
+        try {
+          const result = await services.blockchain.swap_price(credentials);
+
+          reply.send(result);
         } catch (err: any) {
           reply.status(422).send(err);
         }

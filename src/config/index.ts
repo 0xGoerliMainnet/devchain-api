@@ -50,6 +50,10 @@ const config: config_i = {
     products_favs: '/products/favs',
 
     // BLOCKCHAIN ENDPOINTS
+
+    // tokens
+    blockchain_tokens: '/tokens/:chain',
+
     // GoPlusLabs
     blockchain_token_security: '/token_security/:chain_id',
     blockchain_address_security: '/address_security/:address',
@@ -59,6 +63,10 @@ const config: config_i = {
     blockchain_pishing_site: '/pishing_site',
     blockchain_rugpull_detecting: '/rugpull_detecting/:chain_id',
     blockchain_input_decode: '/input_decode',
+
+    // 0x API
+    blockchain_swap_quote: '/swap/:chain/quote',
+    blockchain_swap_price: '/swap/:chain/price',
   },
   env: {
     PORT: process.env.PORT || '3000',
@@ -86,6 +94,9 @@ const config: config_i = {
     URL_UI: process.env.URL_UI || '',
 
     SECRET_KEY_CAPTCHA: process.env.SECRET_KEY_CAPTCHA || '',
+
+    // API KEYS
+    API_KEY_0X: process.env.API_KEY_0X || '',
   },
   roles: {
     admin: 'admin',

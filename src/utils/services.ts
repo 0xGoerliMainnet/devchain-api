@@ -2077,6 +2077,71 @@ export class validator_blockchain_init {
   constructor(options: any) {
     this.options = options;
   }
+
+  async get_tokens(credentials: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'tokens-get' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials.chain) {
+      throw {
+        message: 'missing chain',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    /*
+      credentials.chain is already a string as it comes from the url params
+        if (typeof credentials.chain !== config.types.string) {
+      throw {
+        message: 'invalid type credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+    
+    */
+  }
+
+  async swap_quote(credentials: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'swap-quote' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials.chain) {
+      throw {
+        message: 'missing chain',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+  }
+
+  async swap_price(credentials: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'swap-price' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials.chain) {
+      throw {
+        message: 'missing chain',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+  }
 }
 
 export default {

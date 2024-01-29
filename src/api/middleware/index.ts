@@ -33,7 +33,6 @@ export function prevalidation(
       for (let i: number = 0; i < results.length; i++) {
         if (results[i] === false) {
           reply.status(401).send('unauthorized');
-
           return;
         }
       }
@@ -45,7 +44,6 @@ export function prevalidation(
 
     if (result === false) {
       reply.status(401).send('unauthorized');
-
       return;
     }
 

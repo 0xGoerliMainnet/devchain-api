@@ -1,6 +1,7 @@
 'use strict';
 
 // MODULES
+import axios from 'axios';
 import { createClient } from 'redis';
 
 // UTILS
