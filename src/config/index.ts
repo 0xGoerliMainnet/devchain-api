@@ -65,8 +65,8 @@ const config: config_i = {
     blockchain_input_decode: '/input_decode',
 
     // 0x API
-    blockchain_swap_quote: '/swap/:chain/quote',
-    blockchain_swap_price: '/swap/:chain/price',
+    blockchain_swap_quote: '/swap/quote',
+    blockchain_swap_price: '/swap/price',
   },
   env: {
     PORT: process.env.PORT || '3000',

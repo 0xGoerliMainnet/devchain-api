@@ -81,6 +81,11 @@ function bind_blockchain_routes(
 
           reply.send(res.data);
         } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -112,6 +117,11 @@ function bind_blockchain_routes(
 
           reply.send(res.data);
         } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -143,6 +153,11 @@ function bind_blockchain_routes(
 
           reply.send(res.data);
         } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -178,6 +193,11 @@ function bind_blockchain_routes(
 
           reply.send(res.data);
         } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -206,6 +226,11 @@ function bind_blockchain_routes(
 
           reply.send(res.data);
         } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -234,6 +259,11 @@ function bind_blockchain_routes(
 
           reply.send(res.data);
         } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -265,6 +295,11 @@ function bind_blockchain_routes(
 
           reply.send(res.data);
         } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -292,6 +327,11 @@ function bind_blockchain_routes(
 
           reply.send(res.data);
         } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
           reply.status(422).send(err);
         }
       },
@@ -308,13 +348,14 @@ function bind_blockchain_routes(
           sellAmount: { type: config.types.string },
           value: { type: config.types.string },
           data: { type: config.types.string },
+          chain: { type: config.types.string },
         },
       },
       handler: async function (request: any, reply: any) {
         const credentials: any = {
           ...request.query,
-          chain: request.params.chain,
           url: request.url,
+          chain: request.query.chain,
         };
 
         try {
@@ -323,7 +364,8 @@ function bind_blockchain_routes(
           reply.send(result);
         } catch (err: any) {
           if (err.response) {
-            return reply.status(422).send(err.response.data);
+            reply.status(422).send(err.response.data);
+            return;
           }
 
           reply.status(422).send(err);
@@ -342,13 +384,14 @@ function bind_blockchain_routes(
           sellAmount: { type: config.types.string },
           value: { type: config.types.string },
           data: { type: config.types.string },
+          chain: { type: config.types.string },
         },
       },
       handler: async function (request: any, reply: any) {
         const credentials: any = {
           ...request.query,
-          chain: request.params.chain,
           url: request.url,
+          chain: request.query.chain,
         };
 
         try {
@@ -357,7 +400,8 @@ function bind_blockchain_routes(
           reply.send(result);
         } catch (err: any) {
           if (err.response) {
-            return reply.status(422).send(err.response.data);
+            reply.status(422).send(err.response.data);
+            return;
           }
 
           reply.status(422).send(err);
