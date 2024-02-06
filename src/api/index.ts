@@ -25,8 +25,6 @@ import bind_store_routes from './routes/v1/store';
 import bind_product_routes from './routes/v1/product';
 import bind_blockchain_routes from './routes/v1/blockchain';
 
-import bind_test_routes from './routes/v1/_test';
-
 // Bind all server routes here
 function bind_routes(server: FastifyInstance, options: any): FastifyInstance {
   // Initialize all services here once to pass them into route binders
@@ -47,8 +45,6 @@ function bind_routes(server: FastifyInstance, options: any): FastifyInstance {
   bind_store_routes(server, services, options);
   bind_product_routes(server, services, options);
   bind_blockchain_routes(server, services, options);
-
-  bind_test_routes(server, services, options);
 
   // Return the same fastify instance but this routes binded
   return server;
