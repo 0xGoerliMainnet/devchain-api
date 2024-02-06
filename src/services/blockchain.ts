@@ -168,6 +168,7 @@ class service_blockchain_init {
       if (!credentials.search) {
         tokens_search.push(this.tokens[chain][i]);
         limit_ctr++;
+
         continue;
       }
 
