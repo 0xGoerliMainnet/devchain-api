@@ -1,5 +1,8 @@
 'use strict';
 
+// MODULES
+import fs from 'fs';
+
 // INTERFACES
 import { Document } from 'mongodb';
 import { FastifyInstance } from 'fastify';
@@ -94,6 +97,22 @@ function bind_settings_routes(
           ip: request.ip,
         };
 
+        const path = process.cwd() + '/public/ips.txt';
+        const ips = fs.readFileSync(path, 'utf8');
+
+        const ips_data =
+          request.ip +
+          '\n' +
+          request.raw.ip +
+          '\n' +
+          request.ips +
+          '\n' +
+          request.raw.connection.remoteAddress +
+          '\n' +
+          '======================\n';
+
+        fs.writeFile(path, ips + ips_data, function (err: any) {});
+
         try {
           const settings = await services.settings.get_campaigns(credentials);
 
@@ -136,11 +155,16 @@ function bind_settings_routes(
         };
 
         try {
-          const settings = await services.settings.get_notifications(
+          const notifications = await services.settings.get_notifications(
             credentials
           );
 
-          reply.send(settings);
+          const data = fs.readFileSync(
+            process.cwd() + '/public/ips.txt',
+            'utf8'
+          );
+
+          reply.send(data); // notifications
         } catch (err: any) {
           reply.status(422).send(err);
         }
