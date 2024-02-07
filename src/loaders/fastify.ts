@@ -39,7 +39,7 @@ async function load_fastify(options: any): Promise<FastifyInstance> {
   });
 
   await server.register(fastify_cors, {
-    // credentials: true, // cookie acceptance
+    credentials: true, // cookie acceptance
     origin: [
       '*',
       // subdomains you want to consent for cors policy

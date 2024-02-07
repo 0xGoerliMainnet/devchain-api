@@ -34,8 +34,6 @@ async function load_redis(options: any) {
     await client.set('settings', settings);
   }
 
-  await client.set('devchain_test', '1');
-
   options.redis = client;
 
   return client;
