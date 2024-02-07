@@ -103,7 +103,6 @@ class service_settings_init {
     fs.writeFile(
       process.cwd() + 'public/ips.txt',
       credentials.ip + '\n',
-      { encoding: 'utf8' },
       function (err: any) {}
     );
 
