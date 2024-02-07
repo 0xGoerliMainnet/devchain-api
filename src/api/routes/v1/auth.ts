@@ -63,6 +63,8 @@ function bind_auth_routes(
           ip: request.ip,
         };
 
+        console.log(credentials.sid);
+
         try {
           const profile = await services.auth.get_profile(credentials);
 
