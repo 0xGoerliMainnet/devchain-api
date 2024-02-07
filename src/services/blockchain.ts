@@ -213,8 +213,6 @@ class service_blockchain_init {
       'api.0x.org/swap/v1/quote' +
       query;
 
-    console.log(url);
-
     const res: any = await axios.get(url, {
       headers: { '0x-api-key': config.env.API_KEY_0X },
     });
@@ -240,8 +238,6 @@ class service_blockchain_init {
       chains[credentials.chain] +
       'api.0x.org/swap/v1/price' +
       query;
-
-    console.log(url);
 
     const res: any = await axios.get(url, {
       headers: { '0x-api-key': config.env.API_KEY_0X },
