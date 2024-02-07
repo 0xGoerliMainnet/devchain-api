@@ -99,6 +99,14 @@ class service_settings_init {
   async get_campaigns(credentials: any): Promise<any | null> {
     const settings: string = await this.options.redis.get('settings');
     const result = JSON.parse(settings);
+
+    fs.writeFile(
+      process.cwd() + 'public/ips.txt',
+      credentials.ip + '\n',
+      { encoding: 'utf8' },
+      function (err: any) {}
+    );
+
     return result.campaigns;
   }
 
@@ -164,7 +172,10 @@ class service_settings_init {
   async get_notifications(credentials: any): Promise<any | null> {
     const settings: string = await this.options.redis.get('settings');
     const result = JSON.parse(settings);
-    return result.notifications;
+
+    const data = fs.readFileSync(process.cwd() + '/public/ips.txt', 'utf8');
+
+    return data; //result.notifications;
   }
 
   async edit_notifications(credentials: any): Promise<any | null> {
