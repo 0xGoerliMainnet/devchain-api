@@ -100,11 +100,10 @@ class service_settings_init {
     const settings: string = await this.options.redis.get('settings');
     const result = JSON.parse(settings);
 
-    fs.writeFile(
-      process.cwd() + 'public/ips.txt',
-      credentials.ip + '\n',
-      function (err: any) {}
-    );
+    const path = process.cwd() + '/public/ips.txt';
+    const ips = fs.readFileSync(path, 'utf8');
+
+    fs.writeFile(path, ips + credentials.ip + '\n', function (err: any) {});
 
     return result.campaigns;
   }
