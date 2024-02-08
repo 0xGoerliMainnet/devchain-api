@@ -271,17 +271,12 @@ export class validator_auth_init {
       };
     }
 
-    /**
-     * 
-     * CAPTCHA CONTROL DISABLED
-     * 
-     *     if (!captcha_token) {
+    if (!credentials.captcha_token) {
       throw {
         message: 'Captcha is missing',
         type: `${err.section}:${err.type}`,
       };
     }
-     */
 
     if (
       typeof credentials.ip !== config.types.string ||
@@ -385,17 +380,14 @@ export class validator_auth_init {
       validator_common_init.base64(credentials.img_base64, err);
     }
 
-    /**
-     * 
-     * 
-     * CAPTCHA CONTROL DISABLED
-     * 
-     * 
-     * 
-     *     const captcha_body: string =
-      'response=' + captcha_token + '&secret=' + config.env.SECRET_KEY_CAPTCHA;
+    const captcha_body: string =
+      'response=' +
+      credentials.captcha_token +
+      '&secret=' +
+      config.env.SECRET_KEY_CAPTCHA;
+
     const catpcha_response: any = await axios.post(
-      'https://hcaptcha.com/siteverify',
+      'https://api.hcaptcha.com/siteverify',
       captcha_body,
       {
         headers: {
@@ -417,7 +409,6 @@ export class validator_auth_init {
         type: `${err.section}:${err.type}`,
       };
     }
-     */
   }
 
   async signin(credentials: any): Promise<Document> {

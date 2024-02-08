@@ -32,6 +32,32 @@ class service_blockchain_init {
       avalanche: [],
       arbitrum: [],
       polygon: [],
+      sepolia: [
+        {
+          name: 'Wrapped Ether',
+          symbol: 'WETH',
+          img: 'https://api.devchain.net/public/images/token.png',
+          decimals: 18,
+          address: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
+          chain_id: 11155111,
+        },
+        {
+          name: 'ChainLink Token',
+          symbol: 'LINK',
+          img: 'https://api.devchain.net/public/images/token.png',
+          decimals: 18,
+          address: '0x779877A7B0D9E8603169DdbD7836e478b4624789',
+          chain_id: 11155111,
+        },
+        {
+          name: 'Uniswap',
+          symbol: 'UNI',
+          img: 'https://api.devchain.net/public/images/token.png',
+          decimals: 18,
+          address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+          chain_id: 11155111,
+        },
+      ],
     };
 
     // Get tokens from supported chains
