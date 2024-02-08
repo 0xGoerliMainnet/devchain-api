@@ -20,6 +20,7 @@ class service_blockchain_init {
   private options: any;
   private validator: any;
   private tokens: any;
+  private chains: any;
 
   constructor(options: any) {
     this.options = options;
@@ -58,6 +59,15 @@ class service_blockchain_init {
           chain_id: 11155111,
         },
       ],
+    };
+
+    this.chains = {
+      ethereum: '',
+      bsc: 'bsc.',
+      arbitrum: 'arbitrum.',
+      avalanche: 'avalanche.',
+      polygon: 'polygon.',
+      sepolia: 'sepolia.',
     };
 
     // Get tokens from supported chains
@@ -223,19 +233,11 @@ class service_blockchain_init {
 
     // TODO:
 
-    const chains: any = {
-      ethereum: '',
-      bsc: 'bsc.',
-      arbitrum: 'arbitrum.',
-      avalanche: 'avalanche.',
-      polygon: 'polygon.',
-    };
-
     let query: string = '?' + credentials.url.split('?')[1];
 
     const url: string =
       'https://' +
-      chains[credentials.chain] +
+      this.chains[credentials.chain] +
       'api.0x.org/swap/v1/quote' +
       query;
 
@@ -249,19 +251,11 @@ class service_blockchain_init {
   async swap_price(credentials: any): Promise<any | null> {
     await this.validator.swap_price(credentials);
 
-    const chains: any = {
-      ethereum: '',
-      bsc: 'bsc.',
-      arbitrum: 'arbitrum.',
-      avalanche: 'avalanche.',
-      polygon: 'polygon.',
-    };
-
     let query: string = '?' + credentials.url.split('?')[1];
 
     const url: string =
       'https://' +
-      chains[credentials.chain] +
+      this.chains[credentials.chain] +
       'api.0x.org/swap/v1/price' +
       query;
 
