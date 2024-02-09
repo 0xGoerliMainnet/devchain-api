@@ -84,14 +84,16 @@ class service_blockchain_init {
           this.tokens.ethereum[i].name = res.data.tokens[i].name;
           this.tokens.ethereum[i].symbol = res.data.tokens[i].symbol;
           this.tokens.ethereum[i].decimals = res.data.tokens[i].decimals;
-
-          if (
-            res.data.tokens[i].address.toLowerCase() ===
-            '0xdac17f958d2ee523a2206206994597c13d831ec7'.toLowerCase()
-          ) {
-            console.log(res.data.tokens[i]);
-          }
         }
+
+        this.tokens.ethereum.push({
+          chain_id: 1,
+          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          name: 'Ethereum',
+          symbol: 'ETH',
+          decimals: 18,
+        });
       });
 
     axios
@@ -106,14 +108,16 @@ class service_blockchain_init {
           this.tokens.bsc[i].name = res.data.tokens[i].name;
           this.tokens.bsc[i].symbol = res.data.tokens[i].symbol;
           this.tokens.bsc[i].decimals = res.data.tokens[i].decimals;
-
-          if (
-            res.data.tokens[i].address.toLowerCase() ===
-            '0x55d398326f99059ff775485246999027b3197955'.toLowerCase()
-          ) {
-            console.log(res.data.tokens[i]);
-          }
         }
+
+        this.tokens.bsc.push({
+          chain_id: 56,
+          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          name: 'BNB',
+          symbol: 'BNB',
+          decimals: 18,
+        });
       });
 
     axios
@@ -128,14 +132,16 @@ class service_blockchain_init {
           this.tokens.avalanche[i].name = res.data.tokens[i].name;
           this.tokens.avalanche[i].symbol = res.data.tokens[i].symbol;
           this.tokens.avalanche[i].decimals = res.data.tokens[i].decimals;
-
-          if (
-            res.data.tokens[i].address.toLowerCase() ===
-            '0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7'.toLowerCase()
-          ) {
-            console.log(res.data.tokens[i]);
-          }
         }
+
+        this.tokens.avalanche.push({
+          chain_id: 43114,
+          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png',
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          name: 'Avalanche',
+          symbol: 'AVAX',
+          decimals: 18,
+        });
       });
 
     axios
@@ -150,14 +156,16 @@ class service_blockchain_init {
           this.tokens.arbitrum[i].name = res.data.tokens[i].name;
           this.tokens.arbitrum[i].symbol = res.data.tokens[i].symbol;
           this.tokens.arbitrum[i].decimals = res.data.tokens[i].decimals;
-
-          if (
-            res.data.tokens[i].address.toLowerCase() ===
-            '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9'.toLowerCase()
-          ) {
-            console.log(res.data.tokens[i]);
-          }
         }
+
+        this.tokens.arbitrum.push({
+          chain_id: 42161,
+          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png',
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          name: 'Arbitrum',
+          symbol: 'ARB',
+          decimals: 18,
+        });
       });
 
     axios
@@ -172,14 +180,16 @@ class service_blockchain_init {
           this.tokens.polygon[i].name = res.data.tokens[i].name;
           this.tokens.polygon[i].symbol = res.data.tokens[i].symbol;
           this.tokens.polygon[i].decimals = res.data.tokens[i].decimals;
-
-          if (
-            res.data.tokens[i].address.toLowerCase() ===
-            '0xc2132d05d31c914a87c6611c10748aeb04b58e8f'.toLowerCase()
-          ) {
-            console.log(res.data.tokens[i]);
-          }
         }
+
+        this.tokens.polygon.push({
+          chain_id: 137,
+          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          name: 'Polygon',
+          symbol: 'MATIC',
+          decimals: 18,
+        });
       });
   }
 
