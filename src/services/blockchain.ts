@@ -75,17 +75,6 @@ class service_blockchain_init {
     axios
       .get('https://tokens.coingecko.com/ethereum/all.json')
       .then((res: any) => {
-        for (let i: number = 0; i < res.data.tokens.length; i++) {
-          this.tokens.ethereum[i] = {};
-
-          this.tokens.ethereum[i].chain_id = res.data.tokens[i].chainId;
-          this.tokens.ethereum[i].img = res.data.tokens[i].logoURI;
-          this.tokens.ethereum[i].address = res.data.tokens[i].address;
-          this.tokens.ethereum[i].name = res.data.tokens[i].name;
-          this.tokens.ethereum[i].symbol = res.data.tokens[i].symbol;
-          this.tokens.ethereum[i].decimals = res.data.tokens[i].decimals;
-        }
-
         this.tokens.ethereum.push({
           chain_id: 1,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
@@ -94,22 +83,24 @@ class service_blockchain_init {
           symbol: 'ETH',
           decimals: 18,
         });
+
+        for (let i: number = 0; i < res.data.tokens.length; i++) {
+          const token = {
+            chain_id: res.data.tokens[i].chainId,
+            img: res.data.tokens[i].logoURI,
+            address: res.data.tokens[i].address,
+            name: res.data.tokens[i].name,
+            symbol: res.data.tokens[i].symbol,
+            decimals: res.data.tokens[i].decimals,
+          };
+
+          this.tokens.ethereum.push(token);
+        }
       });
 
     axios
       .get('https://tokens.coingecko.com/binance-smart-chain/all.json')
       .then((res: any) => {
-        for (let i: number = 0; i < res.data.tokens.length; i++) {
-          this.tokens.bsc[i] = {};
-
-          this.tokens.bsc[i].chain_id = res.data.tokens[i].chainId;
-          this.tokens.bsc[i].img = res.data.tokens[i].logoURI;
-          this.tokens.bsc[i].address = res.data.tokens[i].address;
-          this.tokens.bsc[i].name = res.data.tokens[i].name;
-          this.tokens.bsc[i].symbol = res.data.tokens[i].symbol;
-          this.tokens.bsc[i].decimals = res.data.tokens[i].decimals;
-        }
-
         this.tokens.bsc.push({
           chain_id: 56,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
@@ -118,22 +109,24 @@ class service_blockchain_init {
           symbol: 'BNB',
           decimals: 18,
         });
+
+        for (let i: number = 0; i < res.data.tokens.length; i++) {
+          const token = {
+            chain_id: res.data.tokens[i].chainId,
+            img: res.data.tokens[i].logoURI,
+            address: res.data.tokens[i].address,
+            name: res.data.tokens[i].name,
+            symbol: res.data.tokens[i].symbol,
+            decimals: res.data.tokens[i].decimals,
+          };
+
+          this.tokens.bsc.push(token);
+        }
       });
 
     axios
       .get('https://tokens.coingecko.com/avalanche/all.json')
       .then((res: any) => {
-        for (let i: number = 0; i < res.data.tokens.length; i++) {
-          this.tokens.avalanche[i] = {};
-
-          this.tokens.avalanche[i].chain_id = res.data.tokens[i].chainId;
-          this.tokens.avalanche[i].img = res.data.tokens[i].logoURI;
-          this.tokens.avalanche[i].address = res.data.tokens[i].address;
-          this.tokens.avalanche[i].name = res.data.tokens[i].name;
-          this.tokens.avalanche[i].symbol = res.data.tokens[i].symbol;
-          this.tokens.avalanche[i].decimals = res.data.tokens[i].decimals;
-        }
-
         this.tokens.avalanche.push({
           chain_id: 43114,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png',
@@ -142,22 +135,24 @@ class service_blockchain_init {
           symbol: 'AVAX',
           decimals: 18,
         });
+
+        for (let i: number = 0; i < res.data.tokens.length; i++) {
+          const token = {
+            chain_id: res.data.tokens[i].chainId,
+            img: res.data.tokens[i].logoURI,
+            address: res.data.tokens[i].address,
+            name: res.data.tokens[i].name,
+            symbol: res.data.tokens[i].symbol,
+            decimals: res.data.tokens[i].decimals,
+          };
+
+          this.tokens.avalanche.push(token);
+        }
       });
 
     axios
       .get('https://tokens.coingecko.com/arbitrum-one/all.json')
       .then((res: any) => {
-        for (let i: number = 0; i < res.data.tokens.length; i++) {
-          this.tokens.arbitrum[i] = {};
-
-          this.tokens.arbitrum[i].chain_id = res.data.tokens[i].chainId;
-          this.tokens.arbitrum[i].img = res.data.tokens[i].logoURI;
-          this.tokens.arbitrum[i].address = res.data.tokens[i].address;
-          this.tokens.arbitrum[i].name = res.data.tokens[i].name;
-          this.tokens.arbitrum[i].symbol = res.data.tokens[i].symbol;
-          this.tokens.arbitrum[i].decimals = res.data.tokens[i].decimals;
-        }
-
         this.tokens.arbitrum.push({
           chain_id: 42161,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png',
@@ -166,22 +161,24 @@ class service_blockchain_init {
           symbol: 'ARB',
           decimals: 18,
         });
+
+        for (let i: number = 0; i < res.data.tokens.length; i++) {
+          const token = {
+            chain_id: res.data.tokens[i].chainId,
+            img: res.data.tokens[i].logoURI,
+            address: res.data.tokens[i].address,
+            name: res.data.tokens[i].name,
+            symbol: res.data.tokens[i].symbol,
+            decimals: res.data.tokens[i].decimals,
+          };
+
+          this.tokens.arbitrum.push(token);
+        }
       });
 
     axios
       .get('https://tokens.coingecko.com/polygon-pos/all.json')
       .then((res: any) => {
-        for (let i: number = 0; i < res.data.tokens.length; i++) {
-          this.tokens.polygon[i] = {};
-
-          this.tokens.polygon[i].chain_id = res.data.tokens[i].chainId;
-          this.tokens.polygon[i].img = res.data.tokens[i].logoURI;
-          this.tokens.polygon[i].address = res.data.tokens[i].address;
-          this.tokens.polygon[i].name = res.data.tokens[i].name;
-          this.tokens.polygon[i].symbol = res.data.tokens[i].symbol;
-          this.tokens.polygon[i].decimals = res.data.tokens[i].decimals;
-        }
-
         this.tokens.polygon.push({
           chain_id: 137,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
@@ -190,6 +187,19 @@ class service_blockchain_init {
           symbol: 'MATIC',
           decimals: 18,
         });
+
+        for (let i: number = 0; i < res.data.tokens.length; i++) {
+          const token = {
+            chain_id: res.data.tokens[i].chainId,
+            img: res.data.tokens[i].logoURI,
+            address: res.data.tokens[i].address,
+            name: res.data.tokens[i].name,
+            symbol: res.data.tokens[i].symbol,
+            decimals: res.data.tokens[i].decimals,
+          };
+
+          this.tokens.polygon.push(token);
+        }
       });
   }
 
