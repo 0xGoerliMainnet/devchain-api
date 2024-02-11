@@ -156,7 +156,7 @@ class service_blockchain_init {
         this.tokens.arbitrum.push({
           chain_id: 42161,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png',
-          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          address: '0x912Ce59144191c1204e64559fe8253a0e49e6548',
           name: 'Arbitrum',
           symbol: 'ARB',
           decimals: 18,
