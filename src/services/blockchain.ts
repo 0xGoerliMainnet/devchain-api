@@ -19,6 +19,8 @@ import UTILS_COMMON from '../utils/common';
 class service_blockchain_init {
   private options: any;
   private validator: any;
+  private api_keys_0x: string[];
+  private api_keys_0x_index: number;
   private tokens: any;
   private chains: any;
 
@@ -26,6 +28,9 @@ class service_blockchain_init {
     this.options = options;
 
     this.validator = new UTILS_SERVICES.validator_blockchain_init(options);
+
+    this.api_keys_0x = config.env.API_KEY_0X.split(' ');
+    this.api_keys_0x_index = 0;
 
     this.tokens = {
       ethereum: [], // Ethereum mainnet
@@ -261,9 +266,16 @@ class service_blockchain_init {
       'api.0x.org/swap/v1/quote' +
       query;
 
+    const api_key_0x: string = this.api_keys_0x[this.api_keys_0x_index];
     const res: any = await axios.get(url, {
-      headers: { '0x-api-key': config.env.API_KEY_0X },
+      headers: { '0x-api-key': api_key_0x },
     });
+
+    this.api_keys_0x_index++;
+
+    if (this.api_keys_0x_index >= this.api_keys_0x.length) {
+      this.api_keys_0x_index = 0;
+    }
 
     return res.data;
   }
@@ -279,9 +291,15 @@ class service_blockchain_init {
       'api.0x.org/swap/v1/price' +
       query;
 
+    const api_key_0x: string = this.api_keys_0x[this.api_keys_0x_index];
     const res: any = await axios.get(url, {
-      headers: { '0x-api-key': config.env.API_KEY_0X },
+      headers: { '0x-api-key': api_key_0x },
     });
+
+    this.api_keys_0x_index++;
+    if (this.api_keys_0x_index >= this.api_keys_0x.length) {
+      this.api_keys_0x_index = 0;
+    }
 
     return res.data;
   }
