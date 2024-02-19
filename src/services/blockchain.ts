@@ -42,25 +42,25 @@ class service_blockchain_init {
         {
           name: 'Wrapped Ether',
           symbol: 'WETH',
-          img: 'https://api.devchain.net/public/images/token.png',
+          img: '/images/token.png',
           decimals: 18,
-          address: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
+          address: '0xfff9976782d46cc05630d1f6ebab18b2324d6b14',
           chain_id: 11155111,
         },
         {
           name: 'ChainLink Token',
           symbol: 'LINK',
-          img: 'https://api.devchain.net/public/images/token.png',
+          img: '/images/token.png',
           decimals: 18,
-          address: '0x779877A7B0D9E8603169DdbD7836e478b4624789',
+          address: '0x779877A7b0d9e8603169ddbd7836e478b4624789',
           chain_id: 11155111,
         },
         {
           name: 'Uniswap',
           symbol: 'UNI',
-          img: 'https://api.devchain.net/public/images/token.png',
+          img: '/images/token.png',
           decimals: 18,
-          address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+          address: '0x1f9840a85d5aF5bf1d1762d925bdaddc4201f984',
           chain_id: 11155111,
         },
       ],
@@ -213,8 +213,9 @@ class service_blockchain_init {
 
     const tokens_search: any[] = [];
 
-    let limit: number = 20;
+    let limit: number = 26;
     let limit_ctr: number = 0;
+
     const chain: string = credentials.chain.replace(/-/g, '_');
 
     if (!this.tokens[chain]) {
