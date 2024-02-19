@@ -267,6 +267,8 @@ class service_blockchain_init {
       'api.0x.org/swap/v1/quote' +
       query;
 
+    console.log(url);
+
     const api_key_0x: string = this.api_keys_0x[this.api_keys_0x_index];
     const res: any = await axios.get(url, {
       headers: { '0x-api-key': api_key_0x },

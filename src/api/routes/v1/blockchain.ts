@@ -346,8 +346,6 @@ function bind_blockchain_routes(
           buyToken: { type: config.types.string },
           sellToken: { type: config.types.string },
           sellAmount: { type: config.types.string },
-          value: { type: config.types.string },
-          data: { type: config.types.string },
           chain: { type: config.types.string },
         },
       },
