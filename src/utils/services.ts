@@ -2115,14 +2115,14 @@ export class validator_blockchain_init {
       };
     }
 
+    console.log(credentials);
+
     if (credentials.hostname !== config.env.URL_UI) {
       throw {
         message: 'Something went wrong',
         code: `${err.section}:${err.type}`,
       };
     }
-
-    console.log(credentials);
   }
 
   async swap_quote(credentials: any): Promise<any> {
