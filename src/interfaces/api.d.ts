@@ -8,6 +8,7 @@ import service_settings_init from 'services/settings';
 import service_store_init from 'services/store';
 import service_product_init from 'services/product';
 import service_blockchain_init from 'services/blockchain';
+import service_extera_init from 'services/extera';
 
 export interface services_i {
   auth: service_auth_init;
@@ -16,6 +17,7 @@ export interface services_i {
   store: service_store_init;
   product: service_product_init;
   blockchain: service_blockchain_init;
+  extera: service_extera_init;
 }
 
 export interface routes_i {

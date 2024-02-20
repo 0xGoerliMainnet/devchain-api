@@ -2156,6 +2156,116 @@ export class validator_blockchain_init {
   }
 }
 
+export class validator_extera_init {
+  private options: options_i;
+
+  constructor(options: options_i) {
+    this.options = options;
+  }
+
+  async create_form(credentials: any): Promise<any> {
+    const err = { section: 'extera', type: 'form-create' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    credentials.name = UTILS_COMMON.str_remove_space(credentials.name);
+    credentials.email = UTILS_COMMON.str_remove_space(credentials.email);
+    credentials.phone = UTILS_COMMON.str_remove_space(credentials.phone);
+    credentials.bio = UTILS_COMMON.str_remove_space(credentials.bio);
+
+    if (
+      typeof credentials.name !== config.types.string ||
+      typeof credentials.email !== config.types.string ||
+      typeof credentials.phone !== config.types.string ||
+      typeof credentials.bio !== config.types.string
+    ) {
+      throw {
+        message: 'invalid credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!validator.isAscii(credentials.name)) {
+      throw {
+        message: 'invalid name',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (credentials.name.length > 200) {
+      throw {
+        message: 'long credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!validator.isMobilePhone(credentials.phone)) {
+      throw {
+        message: 'invalid phone number',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!validator.isEmail(credentials.email)) {
+      throw {
+        message: 'invalid email',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    const existing_form: any = await this.options.db.extera_forms.findOne({
+      email: credentials.email,
+    });
+
+    if (existing_form) {
+      throw {
+        message: 'existing email',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+  }
+
+  async get_forms(credentials: any): Promise<any> {
+    const err = { section: 'extera', type: 'form-get' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials.uid) {
+      credentials.uid = '';
+    }
+  }
+}
+
+export async function create_extera_form_doc(
+  credentials: any,
+  options: options_i
+): Promise<any> {
+  const doc: any = {
+    // auth validator signup configures extra spaces and lowercase chars, you dont have to worry
+    name: UTILS_COMMON.str_remove_space(credentials.name),
+    username: UTILS_COMMON.str_remove_space(credentials.username).toLowerCase(),
+    email: UTILS_COMMON.str_remove_space(credentials.email).toLowerCase(),
+    phone: UTILS_COMMON.str_remove_space(credentials.phone),
+    bio: UTILS_COMMON.str_remove_space(credentials.bio),
+    ip: credentials.ip,
+
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+
+  return doc;
+}
+
 export default {
   validator_common_init,
   validator_auth_init,
@@ -2173,4 +2283,6 @@ export default {
   validator_product_init,
   generate_product_id,
   validator_blockchain_init,
+  validator_extera_init,
+  create_extera_form_doc,
 };

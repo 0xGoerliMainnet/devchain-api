@@ -69,6 +69,9 @@ const config: config_i = {
     // 0x API
     blockchain_swap_quote: '/swap/quote',
     blockchain_swap_price: '/swap/price',
+
+    // EXTERA
+    extera_forms: '/extera/forms',
   },
   env: {
     PORT: process.env.PORT || '3000',
