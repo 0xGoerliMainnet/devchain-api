@@ -19,11 +19,11 @@ import UTILS_COMMON from '../utils/common';
 class service_blockchain_init {
   private options: any;
   private validator: any;
-  private api_keys_0x: string[];
+  private readonly api_keys_0x: string[];
   private api_keys_0x_index: number;
   private tokens: any;
-  private chains: any;
-  private factory: any;
+  private readonly chains: any;
+  private readonly factory: any;
 
   constructor(options: any) {
     this.options = options;
@@ -675,6 +675,8 @@ class service_blockchain_init {
   }
 
   async get_tokens(credentials: any): Promise<any> {
+    credentials.chains = this.chains;
+
     await this.validator.get_tokens(credentials);
 
     const tokens_search: any[] = [];
@@ -683,10 +685,6 @@ class service_blockchain_init {
     let limit_ctr: number = 0;
 
     const chain: string = credentials.chain.replace(/-/g, '_');
-
-    if (!this.tokens[chain]) {
-      return tokens_search;
-    }
 
     for (let i: number = 0; i < this.tokens[chain].length; i++) {
       if (limit_ctr >= limit) {

@@ -2086,16 +2086,12 @@ export class validator_blockchain_init {
       };
     }
 
-    /*
-      credentials.chain is already a string as it comes from the url params
-        if (typeof credentials.chain !== config.types.string) {
+    if (!credentials.chains[credentials.chain]) {
       throw {
-        message: 'invalid type credentials',
+        message: 'unsupported chain',
         code: `${err.section}:${err.type}`,
       };
     }
-    
-    */
   }
 
   async get_factory(credentials: any): Promise<any> {
