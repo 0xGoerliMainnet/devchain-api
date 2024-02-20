@@ -35,10 +35,6 @@ class service_blockchain_init {
 
     this.tokens = {
       ethereum: [], // Ethereum mainnet
-      bsc: [],
-      avalanche: [],
-      arbitrum: [],
-      polygon: [],
       sepolia: [
         {
           name: 'Wrapped Ether',
@@ -65,6 +61,12 @@ class service_blockchain_init {
           chain_id: 11155111,
         },
       ],
+      bsc: [],
+      avalanche: [],
+      arbitrum: [],
+      polygon: [],
+      fantom: [],
+      celo: [],
     };
 
     this.chains = {

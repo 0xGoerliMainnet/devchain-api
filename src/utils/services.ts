@@ -2115,8 +2115,6 @@ export class validator_blockchain_init {
       };
     }
 
-    console.log(credentials);
-
     if (credentials.hostname !== config.env.URL_UI) {
       throw {
         message: 'Something went wrong',
