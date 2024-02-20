@@ -47,6 +47,8 @@ export default interface config_i {
     readonly blockchain_rugpull_detecting: string;
     readonly blockchain_input_decode: string;
 
+    readonly blockchain_factory: string;
+
     // 0x API
     readonly blockchain_swap_quote: string;
     readonly blockchain_swap_price: string;

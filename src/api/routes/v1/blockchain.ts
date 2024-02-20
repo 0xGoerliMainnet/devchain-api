@@ -337,6 +337,27 @@ function bind_blockchain_routes(
       },
     },
 
+    factory_get: {
+      method: 'GET',
+      url: '/v1' + config.endpoints.blockchain_factory,
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          hostname: request.hostname,
+          url: request.url,
+          original_url: request.originalUrl,
+          type: request.params.type,
+        };
+
+        try {
+          const token = await services.blockchain.get_factory(credentials);
+
+          return token;
+        } catch (err: any) {
+          reply.status(422).send(err);
+        }
+      },
+    },
+
     // #service: 0x.org
     swap_quote: {
       method: 'GET',

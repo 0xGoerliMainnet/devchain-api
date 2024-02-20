@@ -2098,6 +2098,33 @@ export class validator_blockchain_init {
     */
   }
 
+  async get_factory(credentials: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'factory-get' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials.type) {
+      throw {
+        message: 'missing token type',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (credentials.hostname !== config.env.URL_UI) {
+      throw {
+        message: 'Something went wrong',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    console.log(credentials);
+  }
+
   async swap_quote(credentials: any): Promise<any> {
     const err = { section: 'blockchain', type: 'swap-quote' };
 
