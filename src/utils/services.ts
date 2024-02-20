@@ -2115,14 +2115,11 @@ export class validator_blockchain_init {
       };
     }
 
-    if (credentials.hostname !== config.env.URL_UI) {
-      /**
-       *       throw {
+    if (credentials.origin !== config.env.URL_UI) {
+      throw {
         message: 'Something went wrong',
         code: `${err.section}:${err.type}`,
       };
-       * 
-       */
     }
   }
 
