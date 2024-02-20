@@ -2116,10 +2116,13 @@ export class validator_blockchain_init {
     }
 
     if (credentials.hostname !== config.env.URL_UI) {
-      throw {
+      /**
+       *       throw {
         message: 'Something went wrong',
         code: `${err.section}:${err.type}`,
       };
+       * 
+       */
     }
   }
 

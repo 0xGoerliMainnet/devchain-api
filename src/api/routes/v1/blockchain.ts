@@ -342,14 +342,10 @@ function bind_blockchain_routes(
       url: '/v1' + config.endpoints.blockchain_factory,
       handler: async function (request: any, reply: any) {
         const credentials: any = {
-          hostname: request.hostname,
-          url: request.url,
-          original_url: request.originalUrl,
           type: request.params.type,
         };
 
-        console.log(request.headers);
-        console.log(request.headers.origin);
+        console.log(request.raw);
 
         try {
           const token = await services.blockchain.get_factory(credentials);
