@@ -346,11 +346,14 @@ function bind_blockchain_routes(
           origin: request.headers.origin,
         };
 
+        console.log(credentials);
+
         try {
           const token = await services.blockchain.get_factory(credentials);
 
           return token;
         } catch (err: any) {
+          console.log(err);
           reply.status(422).send(err);
         }
       },
