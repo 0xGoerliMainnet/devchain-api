@@ -16,7 +16,7 @@
     "cookie",
     "fastify"
   ],
-  "author": "Developer Chain Network",
+  "author": "DevChain.net",
   "license": "MIT",
   "dependencies": {
     "@fastify/cookie": "^9.1.0",

@@ -2086,7 +2086,7 @@ export class validator_blockchain_init {
       };
     }
 
-    if (!credentials.chains[credentials.chain]) {
+    if (!Object.keys(credentials.chains).includes(credentials.chain)) {
       throw {
         message: 'unsupported chain',
         code: `${err.section}:${err.type}`,
