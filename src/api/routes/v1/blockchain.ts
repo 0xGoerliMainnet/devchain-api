@@ -356,9 +356,9 @@ function bind_blockchain_routes(
         };
 
         try {
-          const token = await services.blockchain.factory_create(credentials);
+          const result = await services.blockchain.factory_create(credentials);
 
-          return token;
+          return result;
         } catch (err: any) {
           console.log(err);
           reply.status(422).send(err);

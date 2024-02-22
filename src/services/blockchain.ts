@@ -792,6 +792,8 @@ class service_blockchain_init {
   }
 
   async factory_create(credentials: any): Promise<any> {
+    console.log(credentials);
+
     await this.validator.factory_create(credentials, this.chains, this.factory);
 
     /**
