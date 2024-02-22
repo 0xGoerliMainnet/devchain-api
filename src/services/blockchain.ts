@@ -826,7 +826,7 @@ class service_blockchain_init {
       },
     };
 
-    if (chains[credentials.chain_id]) {
+    if (!chains[credentials.chain_id]) {
       return;
     }
 
