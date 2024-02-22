@@ -52,7 +52,7 @@ const config: config_i = {
     // BLOCKCHAIN ENDPOINTS
 
     // tokens
-    blockchain_tokens: '/tokens/:chain',
+    blockchain_tokens: '/tokens',
 
     // GoPlusLabs
     blockchain_token_security: '/token_security/:chain_id',
