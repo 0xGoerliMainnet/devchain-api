@@ -2090,7 +2090,7 @@ export class validator_blockchain_init {
     }
   }
 
-  async factory_get(credentials: any): Promise<any> {
+  async factory_get(credentials: any, factory: any): Promise<any> {
     const err = { section: 'blockchain', type: 'factory-get' };
 
     if (!credentials) {
@@ -2113,14 +2113,32 @@ export class validator_blockchain_init {
         code: `${err.section}:${err.type}`,
       };
     }
+
+    if (!Object.keys(factory).includes(credentials.type)) {
+      throw {
+        message: 'unsupported token type',
+        code: `${err.section}:${err.type}`,
+      };
+    }
   }
 
-  async factory_create(credentials: any, chains: any): Promise<any> {
+  async factory_create(
+    credentials: any,
+    chains: any,
+    factory: any
+  ): Promise<any> {
     const err = { section: 'blockchain', type: 'factory-create' };
 
     if (!credentials) {
       throw {
         message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (credentials.origin !== 'https://' + config.env.URL_UI) {
+      throw {
+        message: 'Something went wrong',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -2132,9 +2150,9 @@ export class validator_blockchain_init {
       };
     }
 
-    if (credentials.origin !== 'https://' + config.env.URL_UI) {
+    if (!Object.keys(factory).includes(credentials.type)) {
       throw {
-        message: 'Something went wrong',
+        message: 'unsupported token type',
         code: `${err.section}:${err.type}`,
       };
     }

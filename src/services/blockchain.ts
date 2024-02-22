@@ -787,12 +787,97 @@ class service_blockchain_init {
   }
 
   async factory_get(credentials: any): Promise<any> {
-    await this.validator.factory_get(credentials);
+    await this.validator.factory_get(credentials, this.factory);
     return this.factory[credentials.type];
   }
 
   async factory_create(credentials: any): Promise<any> {
-    await this.validator.factory_create(credentials, this.chains);
+    await this.validator.factory_create(credentials, this.chains, this.factory);
+
+    /**
+     * Supported crypto scans that have valid api for verifying contracts
+     */
+    const chains: any = {
+      '1': {
+        api_key: config.env.API_KEY_ETHERSCAN,
+        url: 'https://api.etherscan.io/api',
+      },
+      '56': {
+        api_key: config.env.API_KEY_BSCSCAN,
+        url: 'https://api.bscscan.io/api',
+      },
+      '137': {
+        api_key: config.env.API_KEY_POLYGONSCAN,
+        url: 'https://api.polygonscan.com/api',
+      },
+      '42161': {
+        api_key: config.env.API_KEY_ARBISCAN,
+        url: 'https://api.arbiscan.io/api',
+      },
+      '250': {
+        api_key: config.env.API_KEY_FTMSCAN,
+        url: 'https://api.ftmscan.com/api',
+      },
+    };
+
+    if (chains[credentials.chain_id]) {
+      return;
+    }
+
+    /* compiler versions
+     *
+     *
+     * https://bscscan.com/verifyContract
+     *
+     *
+     * v0.8.24+commit.e11b9ed9
+     * v0.8.23+commit.f704f362
+     * v0.8.22+commit.4fc1097e
+     *
+     * v0.8.9+commit.e5eed63a
+     * v0.8.8+commit.dddeac2f
+     * v0.8.7+commit.e28d00a7
+     * v0.8.6+commit.11564f7e
+     * v0.8.5+commit.a4f2e591
+     * v0.8.4+commit.c7e474f2
+     *
+     *
+     */
+
+    const factory: any = {
+      standard: {
+        path: process.cwd() + '/contracts/StandardToken.sol',
+        contract_name: 'StandardToken',
+        version: 'v0.8.4+commit.c7e474f2',
+      },
+      liquidity_generator:
+        process.cwd() + '/contracts/LiquidityGeneratorToken.sol',
+      contract_name: 'LiqudityGeneratorToken',
+      version: 'v0.8.4+commit.c7e474f2',
+    };
+
+    const source_code: string = fs.readFileSync(
+      factory[credentials.type].path,
+      'utf8'
+    );
+
+    const form: string = `contractaddress=${
+      credentials.contractaddress
+    }&apikey=${
+      chains[credentials.chain_id].api_key
+    }&codeformat=solidity-single-file&contractname=${
+      factory[credentials.type].contract_name
+    }&optimizationused=0&compilerversion=${
+      factory[credentials.type].version
+    }&sourceCode=${source_code}&module=contract&action=verifysourcecode`;
+
+    const res = await axios.post(chains[credentials.chain_id].url, form, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    return res.data;
   }
 
   async swap_quote(credentials: any): Promise<any | null> {

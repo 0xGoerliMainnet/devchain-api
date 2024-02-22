@@ -58,22 +58,37 @@ export default interface config_i {
   readonly env: {
     readonly PORT: string;
     readonly HOST: string;
+
     readonly NODE_ENV: string;
+
     readonly SESSION_SECRET: string;
     readonly SESSION_LIFETIME: number;
     readonly SESSION_LIFETIME_MS: number;
     readonly SESSION_NAME: string;
+
     readonly DB_CONN_STR: string;
     readonly DB_NAME: string;
+
     readonly PERM_ADMIN: string;
     readonly PERM_USER: string;
+
     readonly EMAIL_HOST: string;
     readonly EMAIL_NO_REPLY_USERNAME: string;
     readonly EMAIL_NO_REPLY_PASSWORD: string;
+
     readonly URL_API: string;
     readonly URL_UI: string;
+
     readonly SECRET_KEY_CAPTCHA: string;
+
     readonly API_KEY_0X: string;
+
+    readonly API_KEY_ETHERSCAN: string;
+    readonly API_KEY_BSCSCAN: string;
+    readonly API_KEY_ARBISCAN: string;
+    readonly API_KEY_POLYGONSCAN: string;
+    readonly API_KEY_FTMSCAN: string;
+    readonly API_KEY_CELOSCAN: string;
   };
   readonly roles: {
     readonly admin: roles_t;

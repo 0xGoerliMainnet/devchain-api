@@ -102,6 +102,13 @@ const config: config_i = {
 
     // API KEYS
     API_KEY_0X: process.env.API_KEY_0X || '',
+
+    API_KEY_ETHERSCAN: process.env.API_KEY_ETHERSCAN || '',
+    API_KEY_BSCSCAN: process.env.API_KEY_BSCSCAN || '',
+    API_KEY_ARBISCAN: process.env.API_KEY_ARBISCAN || '',
+    API_KEY_POLYGONSCAN: process.env.API_KEY_POLYGONSCAN || '',
+    API_KEY_FTMSCAN: process.env.API_KEY_FTMSCAN || '',
+    API_KEY_CELOSCAN: process.env.API_KEY_CELOSCAN || '',
   },
   roles: {
     admin: 'admin',
