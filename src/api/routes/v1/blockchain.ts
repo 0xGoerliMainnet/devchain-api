@@ -29,32 +29,6 @@ function bind_blockchain_routes(
     // #state: Public
     // #desc: Check if request has session and user, response: IProfile | null
 
-    // #service: CoinGecko.com
-    get_tokens: {
-      method: 'GET',
-      url: '/v1' + config.endpoints.blockchain_tokens,
-      schema: {
-        querystring: {
-          search: { type: config.types.string },
-        },
-      },
-      //preValidation: mw.prevalidation(null, options),
-      handler: async function (request: any, reply: any) {
-        const credentials: any = {
-          chain: request.params.chain,
-          search: request.query.search,
-        };
-
-        try {
-          const tokens = await services.blockchain.get_tokens(credentials);
-
-          reply.send(tokens);
-        } catch (err: any) {
-          reply.status(422).send(err);
-        }
-      },
-    },
-
     // #service: GoPlusLabs.io
     get_token_security: {
       method: 'GET',
@@ -340,20 +314,80 @@ function bind_blockchain_routes(
     factory_get: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_factory,
+      schema: {
+        querystring: {
+          token_type: { type: config.types.string }, // "type" is not accepted as query string in fastify so we put token_type
+          chain_id: { type: config.types.string },
+        },
+      },
       handler: async function (request: any, reply: any) {
         const credentials: any = {
-          type: request.params.type,
+          type: request.query.token_type,
+          chain_id: request.query.chain_id,
           origin: request.headers.origin,
         };
 
-        console.log(credentials);
-
         try {
-          const token = await services.blockchain.get_factory(credentials);
+          const token = await services.blockchain.factory_get(credentials);
 
           return token;
         } catch (err: any) {
           console.log(err);
+          reply.status(422).send(err);
+        }
+      },
+    },
+
+    factory_create: {
+      method: 'POST',
+      url: '/v1' + config.endpoints.blockchain_factory,
+      schema: {
+        querystring: {
+          token_type: { type: config.types.string }, // "type" is not accepted as query string in fastify so we put token_type
+          chain_id: { type: config.types.string },
+        },
+      },
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          ...request.body,
+          origin: request.headers.origin,
+          type: request.query.token_type,
+          chain_id: request.query.chain_id,
+        };
+
+        try {
+          const token = await services.blockchain.factory_create(credentials);
+
+          return token;
+        } catch (err: any) {
+          console.log(err);
+          reply.status(422).send(err);
+        }
+      },
+    },
+
+    // #service: CoinGecko.com
+    get_tokens: {
+      method: 'GET',
+      url: '/v1' + config.endpoints.blockchain_tokens,
+      schema: {
+        querystring: {
+          search: { type: config.types.string },
+          chain_id: { type: config.types.string },
+        },
+      },
+      //preValidation: mw.prevalidation(null, options),
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          chain_id: request.query.chain_id,
+          search: request.query.search,
+        };
+
+        try {
+          const tokens = await services.blockchain.get_tokens(credentials);
+
+          reply.send(tokens);
+        } catch (err: any) {
           reply.status(422).send(err);
         }
       },
@@ -365,17 +399,13 @@ function bind_blockchain_routes(
       url: '/v1' + config.endpoints.blockchain_swap_quote,
       schema: {
         querystring: {
-          buyToken: { type: config.types.string },
-          sellToken: { type: config.types.string },
-          sellAmount: { type: config.types.string },
-          chain: { type: config.types.string },
+          chain_id: { type: config.types.string },
         },
       },
       handler: async function (request: any, reply: any) {
         const credentials: any = {
-          ...request.query,
           url: request.url,
-          chain: request.query.chain,
+          chain_id: request.query.chain_id,
         };
 
         try {
@@ -399,19 +429,13 @@ function bind_blockchain_routes(
       url: '/v1' + config.endpoints.blockchain_swap_price,
       schema: {
         querystring: {
-          buyToken: { type: config.types.string },
-          sellToken: { type: config.types.string },
-          sellAmount: { type: config.types.string },
-          value: { type: config.types.string },
-          data: { type: config.types.string },
-          chain: { type: config.types.string },
+          chain_id: { type: config.types.string },
         },
       },
       handler: async function (request: any, reply: any) {
         const credentials: any = {
-          ...request.query,
           url: request.url,
-          chain: request.query.chain,
+          chain_id: request.query.chain_id,
         };
 
         try {

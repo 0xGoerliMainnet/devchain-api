@@ -34,8 +34,8 @@ class service_blockchain_init {
     this.api_keys_0x_index = 0;
 
     this.tokens = {
-      ethereum: [], // Ethereum mainnet
-      sepolia: [
+      '1': [], // Ethereum Mainnet
+      '11155111': [
         {
           name: 'Wrapped Ether',
           symbol: 'WETH',
@@ -60,24 +60,95 @@ class service_blockchain_init {
           address: '0x1f9840a85d5aF5bf1d1762d925bdaddc4201f984',
           chain_id: 11155111,
         },
-      ],
-      bsc: [],
-      avalanche: [],
-      arbitrum: [],
-      polygon: [],
-      fantom: [],
-      celo: [],
+      ], // Sepolia
+      '56': [], // BSC
+      '43114': [], // Avalanche
+      '42161': [], // Arbitrum
+      '137': [], // Polygon
+      '250': [], // Fantom
+      '42220': [], // Celo
     };
 
     this.chains = {
-      ethereum: '',
-      sepolia: 'sepolia.',
-      bsc: 'bsc.',
-      arbitrum: 'arbitrum.',
-      avalanche: 'avalanche.',
-      polygon: 'polygon.',
-      fantom: 'fantom.',
-      celo: 'celo.',
+      // Ethereum Mainnet
+      '1': {
+        '0x_param': '',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 6,
+      },
+
+      // Sepolia
+      '11155111': {
+        '0x_param': 'sepolia.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Sepolia',
+        symbol: 'Sepolia',
+        decimals: 6,
+      },
+
+      // BSC
+      '56': {
+        '0x_param': 'bsc.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Binance Smart Chain',
+        symbol: 'BSC',
+        decimals: 18,
+      },
+
+      // Avalanche
+      '43114': {
+        '0x_param': 'avalanche.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Avalanche',
+        symbol: 'AVAX',
+        decimals: 6,
+      },
+
+      // Arbitrum
+      '42161': {
+        '0x_param': 'arbitrum.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Arbitrum',
+        symbol: 'ARB',
+        decimals: 6,
+      },
+
+      // Polygon
+      '137': {
+        '0x_param': 'polygon.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Polygon',
+        symbol: 'MATIC',
+        decimals: 6,
+      },
+
+      // Fantom
+      '250': {
+        '0x_param': 'fantom.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Fantom',
+        symbol: 'FTM',
+        decimals: 6,
+      },
+
+      // Celo
+      '42220': {
+        '0x_param': 'celo.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Celo',
+        symbol: 'CELO',
+        decimals: 6,
+      },
     };
 
     this.factory = {
@@ -496,7 +567,7 @@ class service_blockchain_init {
     axios
       .get('https://tokens.coingecko.com/ethereum/all.json')
       .then((res: any) => {
-        this.tokens.ethereum.push({
+        this.tokens['1'].push({
           chain_id: 1,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
           address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
@@ -515,14 +586,14 @@ class service_blockchain_init {
             decimals: res.data.tokens[i].decimals,
           };
 
-          this.tokens.ethereum.push(token);
+          this.tokens['1'].push(token);
         }
       });
 
     axios
       .get('https://tokens.coingecko.com/binance-smart-chain/all.json')
       .then((res: any) => {
-        this.tokens.bsc.push({
+        this.tokens['56'].push({
           chain_id: 56,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
           address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
@@ -541,14 +612,14 @@ class service_blockchain_init {
             decimals: res.data.tokens[i].decimals,
           };
 
-          this.tokens.bsc.push(token);
+          this.tokens['56'].push(token);
         }
       });
 
     axios
       .get('https://tokens.coingecko.com/avalanche/all.json')
       .then((res: any) => {
-        this.tokens.avalanche.push({
+        this.tokens['43114'].push({
           chain_id: 43114,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png',
           address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
@@ -567,14 +638,14 @@ class service_blockchain_init {
             decimals: res.data.tokens[i].decimals,
           };
 
-          this.tokens.avalanche.push(token);
+          this.tokens['43114'].push(token);
         }
       });
 
     axios
       .get('https://tokens.coingecko.com/arbitrum-one/all.json')
       .then((res: any) => {
-        this.tokens.arbitrum.push({
+        this.tokens['42161'].push({
           chain_id: 42161,
           img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png',
           address: '0x912Ce59144191c1204e64559fe8253a0e49e6548',
@@ -593,14 +664,14 @@ class service_blockchain_init {
             decimals: res.data.tokens[i].decimals,
           };
 
-          this.tokens.arbitrum.push(token);
+          this.tokens['42161'].push(token);
         }
       });
 
     axios
       .get('https://tokens.coingecko.com/polygon-pos/all.json')
       .then((res: any) => {
-        this.tokens.polygon.push({
+        this.tokens['137'].push({
           chain_id: 137,
           img: '/images/polygon.png',
           address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
@@ -619,14 +690,14 @@ class service_blockchain_init {
             decimals: res.data.tokens[i].decimals,
           };
 
-          this.tokens.polygon.push(token);
+          this.tokens['137'].push(token);
         }
       });
 
     axios
       .get('https://tokens.coingecko.com/fantom/all.json')
       .then((res: any) => {
-        this.tokens.fantom.push({
+        this.tokens['250'].push({
           chain_id: 250,
           img: '/images/fantom.png',
           address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
@@ -645,12 +716,12 @@ class service_blockchain_init {
             decimals: res.data.tokens[i].decimals,
           };
 
-          this.tokens.fantom.push(token);
+          this.tokens['250'].push(token);
         }
       });
 
     axios.get('https://tokens.coingecko.com/celo/all.json').then((res: any) => {
-      this.tokens.celo.push({
+      this.tokens['42220'].push({
         chain_id: 42220,
         img: '/images/celo.png',
         address: '0x471ece3750da237f93b8e339c536989b8978a438',
@@ -669,47 +740,44 @@ class service_blockchain_init {
           decimals: res.data.tokens[i].decimals,
         };
 
-        this.tokens.celo.push(token);
+        this.tokens['42220'].push(token);
       }
     });
   }
 
   async get_tokens(credentials: any): Promise<any> {
-    credentials.chains = this.chains;
-
-    await this.validator.get_tokens(credentials);
+    await this.validator.get_tokens(credentials, this.chains);
 
     const tokens_search: any[] = [];
 
+    const chain_id: string = credentials.chain_id || '1'; // Ethereum Mainnet as default;
     let limit: number = 26;
     let limit_ctr: number = 0;
 
-    const chain: string = credentials.chain.replace(/-/g, '_');
-
-    for (let i: number = 0; i < this.tokens[chain].length; i++) {
+    for (let i: number = 0; i < this.tokens[chain_id].length; i++) {
       if (limit_ctr >= limit) {
         break;
       }
 
       if (!credentials.search) {
-        tokens_search.push(this.tokens[chain][i]);
+        tokens_search.push(this.tokens[chain_id][i]);
         limit_ctr++;
 
         continue;
       }
 
       if (
-        this.tokens[chain][i].address
+        this.tokens[chain_id][i].address
           .toLowerCase()
           .includes(credentials.search.toLowerCase()) ||
-        this.tokens[chain][i].name
+        this.tokens[chain_id][i].name
           .toLowerCase()
           .includes(credentials.search.toLowerCase()) ||
-        this.tokens[chain][i].symbol
+        this.tokens[chain_id][i].symbol
           .toLowerCase()
           .includes(credentials.search.toLowerCase())
       ) {
-        tokens_search.push(this.tokens[chain][i]);
+        tokens_search.push(this.tokens[chain_id][i]);
 
         limit_ctr++;
       }
@@ -718,22 +786,25 @@ class service_blockchain_init {
     return tokens_search;
   }
 
-  async get_factory(credentials: any): Promise<any> {
-    await this.validator.get_factory(credentials);
-
+  async factory_get(credentials: any): Promise<any> {
+    await this.validator.factory_get(credentials);
     return this.factory[credentials.type];
   }
 
+  async factory_create(credentials: any): Promise<any> {
+    await this.validator.factory_create(credentials, this.chains);
+  }
+
   async swap_quote(credentials: any): Promise<any | null> {
-    await this.validator.swap_quote(credentials);
+    await this.validator.swap_quote(credentials, this.chains);
 
     // TODO:
 
-    let query: string = '?' + credentials.url.split('?')[1];
+    const query: string = '?' + credentials.url.split('?')[1];
 
     const url: string =
       'https://' +
-      this.chains[credentials.chain] +
+      this.chains[credentials.chain_id]['0x_param'] +
       'api.0x.org/swap/v1/quote' +
       query;
 
@@ -752,13 +823,13 @@ class service_blockchain_init {
   }
 
   async swap_price(credentials: any): Promise<any | null> {
-    await this.validator.swap_price(credentials);
+    await this.validator.swap_price(credentials, this.chains);
 
-    let query: string = '?' + credentials.url.split('?')[1];
+    const query: string = '?' + credentials.url.split('?')[1];
 
     const url: string =
       'https://' +
-      this.chains[credentials.chain] +
+      this.chains[credentials.chain_id]['0x_param'] +
       'api.0x.org/swap/v1/price' +
       query;
 
@@ -768,6 +839,7 @@ class service_blockchain_init {
     });
 
     this.api_keys_0x_index++;
+
     if (this.api_keys_0x_index >= this.api_keys_0x.length) {
       this.api_keys_0x_index = 0;
     }

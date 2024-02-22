@@ -2069,7 +2069,7 @@ export class validator_blockchain_init {
     this.options = options;
   }
 
-  async get_tokens(credentials: any): Promise<any> {
+  async get_tokens(credentials: any, chains: any): Promise<any> {
     const err = { section: 'blockchain', type: 'tokens-get' };
 
     if (!credentials) {
@@ -2079,14 +2079,10 @@ export class validator_blockchain_init {
       };
     }
 
-    if (!credentials.chain) {
-      throw {
-        message: 'missing chain',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!Object.keys(credentials.chains).includes(credentials.chain)) {
+    if (
+      credentials.chain_id &&
+      !Object.keys(chains).includes(credentials.chain_id)
+    ) {
       throw {
         message: 'unsupported chain',
         code: `${err.section}:${err.type}`,
@@ -2094,7 +2090,7 @@ export class validator_blockchain_init {
     }
   }
 
-  async get_factory(credentials: any): Promise<any> {
+  async factory_get(credentials: any): Promise<any> {
     const err = { section: 'blockchain', type: 'factory-get' };
 
     if (!credentials) {
@@ -2119,7 +2115,39 @@ export class validator_blockchain_init {
     }
   }
 
-  async swap_quote(credentials: any): Promise<any> {
+  async factory_create(credentials: any, chains: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'factory-create' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials.type) {
+      throw {
+        message: 'missing token type',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (credentials.origin !== 'https://' + config.env.URL_UI) {
+      throw {
+        message: 'Something went wrong',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!Object.keys(chains).includes(credentials.chain_id)) {
+      throw {
+        message: 'unsupported chain',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+  }
+
+  async swap_quote(credentials: any, chains: any): Promise<any> {
     const err = { section: 'blockchain', type: 'swap-quote' };
 
     if (!credentials) {
@@ -2129,15 +2157,15 @@ export class validator_blockchain_init {
       };
     }
 
-    if (!credentials.chain) {
+    if (!Object.keys(chains).includes(credentials.chain_id)) {
       throw {
-        message: 'missing chain',
+        message: 'unsupported chain',
         code: `${err.section}:${err.type}`,
       };
     }
   }
 
-  async swap_price(credentials: any): Promise<any> {
+  async swap_price(credentials: any, chains: any): Promise<any> {
     const err = { section: 'blockchain', type: 'swap-price' };
 
     if (!credentials) {
@@ -2147,9 +2175,9 @@ export class validator_blockchain_init {
       };
     }
 
-    if (!credentials.chain) {
+    if (!Object.keys(chains).includes(credentials.chain_id)) {
       throw {
-        message: 'missing chain',
+        message: 'unsupported chain',
         code: `${err.section}:${err.type}`,
       };
     }

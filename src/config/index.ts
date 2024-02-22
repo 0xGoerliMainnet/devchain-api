@@ -64,7 +64,7 @@ const config: config_i = {
     blockchain_rugpull_detecting: '/rugpull_detecting/:chain_id',
     blockchain_input_decode: '/input_decode',
 
-    blockchain_factory: '/factory/:type',
+    blockchain_factory: '/factory',
 
     // 0x API
     blockchain_swap_quote: '/swap/quote',
