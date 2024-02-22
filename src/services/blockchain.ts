@@ -802,6 +802,10 @@ class service_blockchain_init {
         api_key: config.env.API_KEY_ETHERSCAN,
         url: 'https://api.etherscan.io/api',
       },
+      '11155111': {
+        api_key: config.env.API_KEY_ETHERSCAN,
+        url: 'https://api.etherscan.io/api',
+      },
       '56': {
         api_key: config.env.API_KEY_BSCSCAN,
         url: 'https://api.bscscan.io/api',
