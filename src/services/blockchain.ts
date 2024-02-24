@@ -794,6 +794,7 @@ class service_blockchain_init {
   async factory_create(credentials: any): Promise<any> {
     await this.validator.factory_create(credentials, this.chains, this.factory);
 
+    console.log(credentials);
     /**
      * Supported crypto scans that have valid api for verifying contracts
      */
@@ -868,8 +869,6 @@ class service_blockchain_init {
       factory[credentials.type].path,
       'utf8'
     );
-
-    console.log(source_code);
 
     const form: string = `contractaddress=${
       credentials.contract_address
