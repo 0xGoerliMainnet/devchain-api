@@ -792,8 +792,6 @@ class service_blockchain_init {
   }
 
   async factory_create(credentials: any): Promise<any> {
-    console.log(credentials);
-
     await this.validator.factory_create(credentials, this.chains, this.factory);
 
     /**
@@ -804,25 +802,29 @@ class service_blockchain_init {
         api_key: config.env.API_KEY_ETHERSCAN,
         url: 'https://api.etherscan.io/api',
       },
-      '11155111': {
-        api_key: config.env.API_KEY_ETHERSCAN,
-        url: 'https://api.etherscan.io/api',
-      },
       '56': {
         api_key: config.env.API_KEY_BSCSCAN,
         url: 'https://api.bscscan.io/api',
+      },
+      '97': {
+        api_key: config.env.API_KEY_BSCSCAN,
+        url: 'https://api-testnet.bscscan.com/api',
       },
       '137': {
         api_key: config.env.API_KEY_POLYGONSCAN,
         url: 'https://api.polygonscan.com/api',
       },
+      '250': {
+        api_key: config.env.API_KEY_FTMSCAN,
+        url: 'https://api.ftmscan.com/api',
+      },
       '42161': {
         api_key: config.env.API_KEY_ARBISCAN,
         url: 'https://api.arbiscan.io/api',
       },
-      '250': {
-        api_key: config.env.API_KEY_FTMSCAN,
-        url: 'https://api.ftmscan.com/api',
+      '11155111': {
+        api_key: config.env.API_KEY_ETHERSCAN,
+        url: 'https://api-sepolia.etherscan.io/api',
       },
     };
 
@@ -866,6 +868,8 @@ class service_blockchain_init {
       factory[credentials.type].path,
       'utf8'
     );
+
+    console.log(source_code);
 
     const form: string = `contractaddress=${
       credentials.contractaddress
