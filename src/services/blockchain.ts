@@ -35,6 +35,12 @@ class service_blockchain_init {
 
     this.tokens = {
       '1': [], // Ethereum Mainnet
+      '56': [], // BSC
+      '137': [], // Polygon
+      '250': [], // Fantom
+      '42161': [], // Arbitrum
+      '42220': [], // Celo
+      '43114': [], // Avalanche
       '11155111': [
         {
           name: 'Wrapped Ether',
@@ -61,12 +67,6 @@ class service_blockchain_init {
           chain_id: 11155111,
         },
       ], // Sepolia
-      '56': [], // BSC
-      '43114': [], // Avalanche
-      '42161': [], // Arbitrum
-      '137': [], // Polygon
-      '250': [], // Fantom
-      '42220': [], // Celo
     };
 
     this.chains = {
@@ -80,16 +80,6 @@ class service_blockchain_init {
         decimals: 6,
       },
 
-      // Sepolia
-      '11155111': {
-        '0x_param': 'sepolia.',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Sepolia',
-        symbol: 'Sepolia',
-        decimals: 6,
-      },
-
       // BSC
       '56': {
         '0x_param': 'bsc.',
@@ -98,26 +88,6 @@ class service_blockchain_init {
         name: 'Binance Smart Chain',
         symbol: 'BSC',
         decimals: 18,
-      },
-
-      // Avalanche
-      '43114': {
-        '0x_param': 'avalanche.',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Avalanche',
-        symbol: 'AVAX',
-        decimals: 6,
-      },
-
-      // Arbitrum
-      '42161': {
-        '0x_param': 'arbitrum.',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Arbitrum',
-        symbol: 'ARB',
-        decimals: 6,
       },
 
       // Polygon
@@ -140,6 +110,16 @@ class service_blockchain_init {
         decimals: 6,
       },
 
+      // Arbitrum
+      '42161': {
+        '0x_param': 'arbitrum.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Arbitrum',
+        symbol: 'ARB',
+        decimals: 6,
+      },
+
       // Celo
       '42220': {
         '0x_param': 'celo.',
@@ -147,6 +127,26 @@ class service_blockchain_init {
         usdt_decimals: '',
         name: 'Celo',
         symbol: 'CELO',
+        decimals: 6,
+      },
+
+      // Avalanche
+      '43114': {
+        '0x_param': 'avalanche.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Avalanche',
+        symbol: 'AVAX',
+        decimals: 6,
+      },
+
+      // Sepolia
+      '11155111': {
+        '0x_param': 'sepolia.',
+        usdt_address: '',
+        usdt_decimals: '',
+        name: 'Sepolia',
+        symbol: 'Sepolia',
         decimals: 6,
       },
     };
@@ -863,7 +863,7 @@ class service_blockchain_init {
     };
 
     const source_code: string = fs.readFileSync(
-      factory[credentials.type].path,
+      process.cwd() + factory[credentials.type].path,
       'utf8'
     );
 

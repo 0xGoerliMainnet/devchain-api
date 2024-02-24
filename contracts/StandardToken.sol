@@ -34,8 +34,6 @@ interface IERC20 {
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
 }
 
-
-
 abstract contract Context {
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
@@ -244,7 +242,6 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         return _symbol;
     }
 
-   
     function decimals() public view virtual returns (uint8) {
         return _decimals;
     }
@@ -252,6 +249,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
     function totalSupply() public view virtual override returns (uint256) {
         return _totalSupply;
     }
+
     function balanceOf(address account)
         public
         view
@@ -261,6 +259,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
     {
         return _balances[account];
     }
+
     function transfer(address recipient, uint256 amount)
         public
         virtual
@@ -271,7 +270,6 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         return true;
     }
 
-    
     function allowance(address owner, address spender)
         public
         view
@@ -308,6 +306,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         );
         return true;
     }
+
     function increaseAllowance(address spender, uint256 addedValue)
         public
         virtual
@@ -320,6 +319,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         );
         return true;
     }
+
     function decreaseAllowance(address spender, uint256 subtractedValue)
         public
         virtual
@@ -335,6 +335,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         );
         return true;
     }
+
     function _transfer(
         address sender,
         address recipient,
@@ -354,6 +355,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         
         emit Transfer(sender, recipient, amount);
     }
+
     function _mint(address account, uint256 amount) internal virtual {
         require(account != address(0), "ERC20: mint to the zero address");
 
@@ -363,6 +365,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         _balances[account] = _balances[account].add(amount);
         emit Transfer(address(0), account, amount);
     }
+
     function _burn(address account, uint256 amount) internal virtual {
         require(account != address(0), "ERC20: burn from the zero address");
 
@@ -375,6 +378,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         _totalSupply = _totalSupply.sub(amount);
         emit Transfer(account, address(0), amount);
     }
+
     function _approve(
         address owner,
         address spender,
@@ -386,12 +390,15 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
     }
+
     function _setupDecimals(uint8 decimals_) internal virtual {
         _decimals = decimals_;
     }
+
     function _beforeTokenTransfer(
         address from,
         address to,
         uint256 amount
     ) internal virtual {}
+
 }
