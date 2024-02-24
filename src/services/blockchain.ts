@@ -35,13 +35,21 @@ class service_blockchain_init {
 
     this.tokens = {
       '1': [], // Ethereum Mainnet
-      '56': [], // BSC
+      '56': [], // Binance Smart Chain
       '137': [], // Polygon
       '250': [], // Fantom
       '42161': [], // Arbitrum
       '42220': [], // Celo
       '43114': [], // Avalanche
       '11155111': [
+        {
+          name: 'SepoliaETH',
+          symbol: 'ETH',
+          img: '/images/token.png',
+          decimals: 18,
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          chain_id: 11155111,
+        },
         {
           name: 'Wrapped Ether',
           symbol: 'WETH',
@@ -72,82 +80,115 @@ class service_blockchain_init {
     this.chains = {
       // Ethereum Mainnet
       '1': {
+        name: 'Ethereum Mainnet',
+        token_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+        token_name: 'Ethereum',
+        token_symbol: 'ETH',
+        token_decimals: 18,
+        token_img: '/images/ethereum.png',
+        usdt_address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+        usdt_decimals: 6,
+        url_explorer: 'https://etherscan.io',
         '0x_param': '',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Ethereum',
-        symbol: 'ETH',
-        decimals: 6,
       },
 
       // BSC
       '56': {
-        '0x_param': 'bsc.',
-        usdt_address: '',
-        usdt_decimals: '',
         name: 'Binance Smart Chain',
-        symbol: 'BSC',
-        decimals: 18,
+        token_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+        token_name: 'BNB',
+        token_symbol: 'BNB',
+        token_decimals: 18,
+        token_img: '/images/bnb.png',
+        usdt_address: '0x55d398326f99059ff775485246999027b3197955',
+        usdt_decimals: 18,
+        url_explorer: 'https://bscscan.com',
+        '0x_param': 'bsc.',
       },
 
       // Polygon
       '137': {
+        name: 'Polygon Mainnet',
+        token_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+        token_name: 'Polygon',
+        token_symbol: 'MATIC',
+        token_decimals: 18,
+        token_img: '/images/polygon.png',
+        usdt_address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+        usdt_decimals: 6,
+        url_explorer: 'https://polygonscan.com',
         '0x_param': 'polygon.',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Polygon',
-        symbol: 'MATIC',
-        decimals: 6,
       },
 
       // Fantom
       '250': {
+        name: 'Fantom Mainnet',
+        token_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+        token_name: 'Fantom',
+        token_symbol: 'FTM',
+        token_decimals: 18,
+        usdt_address: '0x049d68029688eabf473097a2fc38ef61633a3c7a',
+        usdt_decimals: 6,
+        url_explorer: 'https://ftmscan.com',
         '0x_param': 'fantom.',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Fantom',
-        symbol: 'FTM',
-        decimals: 6,
       },
 
       // Arbitrum
       '42161': {
+        name: 'Arbitrum Mainnet',
+        token_img: '/images/arbitrum.png',
+        token_address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+        token_name: 'Arbitrum',
+        token_symbol: 'ARB',
+        token_decimals: 6,
+        usdt_address: '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
+        usdt_decimals: 6,
+        url_explorer: 'https://arbiscan.io',
         '0x_param': 'arbitrum.',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Arbitrum',
-        symbol: 'ARB',
-        decimals: 6,
       },
 
       // Celo
       '42220': {
-        '0x_param': 'celo.',
+        name: 'Celo Mainnet',
+        token_img: '/images/celo.png',
+        token_address: '0x471ece3750da237f93b8e339c536989b8978a438',
+        token_name: 'Celo',
+        token_symbol: 'CELO',
+        token_decimals: 18,
         usdt_address: '',
-        usdt_decimals: '',
-        name: 'Celo',
-        symbol: 'CELO',
-        decimals: 6,
+        usdt_decimals: 0,
+        usdc_address: '0x37f750b7cc259a2f741af45294f6a16572cf5cad',
+        usdc_decimals: 6,
+        url_explorer: 'https://celoscan.io/',
+        '0x_param': 'celo.',
       },
 
       // Avalanche
       '43114': {
+        name: 'Avalanche Mainnet C-Chain',
+        token_img: '/images/avalanche.png',
+        token_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+        token_name: 'Avalanche',
+        token_symbol: 'AVAX',
+        token_decimals: 18,
+        usdt_address: '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7',
+        usdt_decimals: 6,
+        url_explorer: 'https://snowtrace.io/',
         '0x_param': 'avalanche.',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Avalanche',
-        symbol: 'AVAX',
-        decimals: 6,
       },
 
       // Sepolia
       '11155111': {
+        name: 'Sepolia Testnet',
+        token_img: '/images/token.png',
+        token_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+        token_name: 'Sepolia',
+        token_symbol: 'SepoliaETH',
+        token_decimals: 18,
+        usdt_address: '0x7169d38820dfd117c3fa1f22a697dba58d90ba06',
+        usdt_decimals: 6,
+        url_explorer: 'https://sepolia.etherscan.io',
         '0x_param': 'sepolia.',
-        usdt_address: '',
-        usdt_decimals: '',
-        name: 'Sepolia',
-        symbol: 'Sepolia',
-        decimals: 6,
       },
     };
 
@@ -617,58 +658,6 @@ class service_blockchain_init {
       });
 
     axios
-      .get('https://tokens.coingecko.com/avalanche/all.json')
-      .then((res: any) => {
-        this.tokens['43114'].push({
-          chain_id: 43114,
-          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png',
-          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-          name: 'Avalanche',
-          symbol: 'AVAX',
-          decimals: 18,
-        });
-
-        for (let i: number = 0; i < res.data.tokens.length; i++) {
-          const token = {
-            chain_id: res.data.tokens[i].chainId,
-            img: res.data.tokens[i].logoURI,
-            address: res.data.tokens[i].address,
-            name: res.data.tokens[i].name,
-            symbol: res.data.tokens[i].symbol,
-            decimals: res.data.tokens[i].decimals,
-          };
-
-          this.tokens['43114'].push(token);
-        }
-      });
-
-    axios
-      .get('https://tokens.coingecko.com/arbitrum-one/all.json')
-      .then((res: any) => {
-        this.tokens['42161'].push({
-          chain_id: 42161,
-          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png',
-          address: '0x912Ce59144191c1204e64559fe8253a0e49e6548',
-          name: 'Arbitrum',
-          symbol: 'ARB',
-          decimals: 18,
-        });
-
-        for (let i: number = 0; i < res.data.tokens.length; i++) {
-          const token = {
-            chain_id: res.data.tokens[i].chainId,
-            img: res.data.tokens[i].logoURI,
-            address: res.data.tokens[i].address,
-            name: res.data.tokens[i].name,
-            symbol: res.data.tokens[i].symbol,
-            decimals: res.data.tokens[i].decimals,
-          };
-
-          this.tokens['42161'].push(token);
-        }
-      });
-
-    axios
       .get('https://tokens.coingecko.com/polygon-pos/all.json')
       .then((res: any) => {
         this.tokens['137'].push({
@@ -720,6 +709,32 @@ class service_blockchain_init {
         }
       });
 
+    axios
+      .get('https://tokens.coingecko.com/arbitrum-one/all.json')
+      .then((res: any) => {
+        this.tokens['42161'].push({
+          chain_id: 42161,
+          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png',
+          address: '0x912Ce59144191c1204e64559fe8253a0e49e6548',
+          name: 'Arbitrum',
+          symbol: 'ARB',
+          decimals: 18,
+        });
+
+        for (let i: number = 0; i < res.data.tokens.length; i++) {
+          const token = {
+            chain_id: res.data.tokens[i].chainId,
+            img: res.data.tokens[i].logoURI,
+            address: res.data.tokens[i].address,
+            name: res.data.tokens[i].name,
+            symbol: res.data.tokens[i].symbol,
+            decimals: res.data.tokens[i].decimals,
+          };
+
+          this.tokens['42161'].push(token);
+        }
+      });
+
     axios.get('https://tokens.coingecko.com/celo/all.json').then((res: any) => {
       this.tokens['42220'].push({
         chain_id: 42220,
@@ -743,6 +758,32 @@ class service_blockchain_init {
         this.tokens['42220'].push(token);
       }
     });
+
+    axios
+      .get('https://tokens.coingecko.com/avalanche/all.json')
+      .then((res: any) => {
+        this.tokens['43114'].push({
+          chain_id: 43114,
+          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png',
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          name: 'Avalanche',
+          symbol: 'AVAX',
+          decimals: 18,
+        });
+
+        for (let i: number = 0; i < res.data.tokens.length; i++) {
+          const token = {
+            chain_id: res.data.tokens[i].chainId,
+            img: res.data.tokens[i].logoURI,
+            address: res.data.tokens[i].address,
+            name: res.data.tokens[i].name,
+            symbol: res.data.tokens[i].symbol,
+            decimals: res.data.tokens[i].decimals,
+          };
+
+          this.tokens['43114'].push(token);
+        }
+      });
   }
 
   async get_tokens(credentials: any): Promise<any> {
@@ -794,7 +835,6 @@ class service_blockchain_init {
   async factory_create(credentials: any): Promise<any> {
     await this.validator.factory_create(credentials, this.chains, this.factory);
 
-    console.log(credentials);
     /**
      * Supported crypto scans that have valid api for verifying contracts
      */

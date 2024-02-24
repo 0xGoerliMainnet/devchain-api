@@ -11,10 +11,7 @@ import { services_i } from 'interfaces/api';
 import service_auth_init from '../services/auth';
 import service_mail_init from '../services/mail';
 import service_settings_init from '../services/settings';
-import service_store_init from '../services/store';
-import service_product_init from '../services/product';
 import service_blockchain_init from '../services/blockchain';
-
 import service_extera_init from '../services/extera';
 
 // Route Binders
@@ -23,8 +20,6 @@ import bind_static_routes from './routes/static';
 import bind_auth_routes from './routes/v1/auth';
 import bind_mail_routes from './routes/v1/mail';
 import bind_settings_routes from './routes/v1/settings';
-import bind_store_routes from './routes/v1/store';
-import bind_product_routes from './routes/v1/product';
 import bind_blockchain_routes from './routes/v1/blockchain';
 
 import bind_extera_routes from './routes/v1/extera';
@@ -36,8 +31,6 @@ function bind_routes(server: FastifyInstance, options: any): FastifyInstance {
     auth: new service_auth_init(options),
     mail: new service_mail_init(options),
     settings: new service_settings_init(options),
-    store: new service_store_init(options),
-    product: new service_product_init(options),
     blockchain: new service_blockchain_init(options),
     extera: new service_extera_init(options),
   };
@@ -47,8 +40,6 @@ function bind_routes(server: FastifyInstance, options: any): FastifyInstance {
   bind_auth_routes(server, services, options);
   bind_mail_routes(server, services, options);
   bind_settings_routes(server, services, options);
-  bind_store_routes(server, services, options);
-  bind_product_routes(server, services, options);
   bind_blockchain_routes(server, services, options);
 
   bind_extera_routes(server, services, options);
