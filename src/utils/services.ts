@@ -2158,10 +2158,12 @@ export class validator_blockchain_init {
     }
 
     if (!Object.keys(chains).includes(credentials.chain_id)) {
-      throw {
+      /**
+       *       throw {
         message: 'unsupported chain',
         code: `${err.section}:${err.type}`,
       };
+       */
     }
   }
 

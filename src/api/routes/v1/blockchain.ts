@@ -332,7 +332,6 @@ function bind_blockchain_routes(
 
           return token;
         } catch (err: any) {
-          console.log(err);
           reply.status(422).send(err);
         }
       },
@@ -360,7 +359,6 @@ function bind_blockchain_routes(
 
           return result;
         } catch (err: any) {
-          console.log(err);
           reply.status(422).send(err);
         }
       },
