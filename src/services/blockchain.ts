@@ -872,7 +872,7 @@ class service_blockchain_init {
     console.log(source_code);
 
     const form: string = `contractaddress=${
-      credentials.contractaddress
+      credentials.contract_address
     }&apikey=${
       chains[credentials.chain_id].api_key
     }&codeformat=solidity-single-file&contractname=${
