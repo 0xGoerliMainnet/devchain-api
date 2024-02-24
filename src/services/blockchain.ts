@@ -863,7 +863,7 @@ class service_blockchain_init {
     };
 
     const source_code: string = fs.readFileSync(
-      process.cwd() + factory[credentials.type].path,
+      factory[credentials.type].path,
       'utf8'
     );
 
