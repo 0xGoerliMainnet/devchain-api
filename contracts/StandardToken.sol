@@ -399,4 +399,3 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         uint256 amount
     ) internal virtual {}
 }
-
