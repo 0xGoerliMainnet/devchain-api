@@ -232,7 +232,7 @@ contract StandardToken is IERC20, Ownable, BaseToken {
 
         emit TokenCreated(owner(), address(this), TokenType.standard, VERSION);
 
-        payable(0x5274048990DD4cf7B1207deF71f53dFfAAe9bbdf).transfer(10000000000000000);
+        payable(serviceFeeReceiver_).transfer(serviceFee_);
     }
 
     function name() public view virtual returns (string memory) {
