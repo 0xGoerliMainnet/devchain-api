@@ -918,7 +918,7 @@ class service_blockchain_init {
       factory[credentials.type].contract_name
     }&optimizationused=0&compilerversion=${
       factory[credentials.type].version
-    }&sourceCode=${source_code}&module=contract&action=verifysourcecode&libraryname1=SafeMath&libraryaddress1=0xCfE28868F6E0A24b7333D22D8943279e76aC2cdc`;
+    }&sourceCode=${source_code}&module=contract&action=verifysourcecode`;
 
     const res = await axios.post(chains[credentials.chain_id].url, form, {
       headers: {
