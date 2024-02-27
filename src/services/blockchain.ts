@@ -890,7 +890,6 @@ class service_blockchain_init {
      * v0.8.5+commit.a4f2e591
      * v0.8.4+commit.c7e474f2
      *
-     *
      */
 
     const factory: any = {
@@ -909,6 +908,8 @@ class service_blockchain_init {
       factory[credentials.type].path,
       'utf-8'
     );
+
+    console.log(source_code);
 
     const form: string = `contractaddress=${
       credentials.contract_address
