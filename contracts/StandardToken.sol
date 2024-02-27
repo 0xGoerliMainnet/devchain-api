@@ -203,7 +203,7 @@ pragma solidity =0.8.4;
 contract StandardToken is IERC20, Ownable, BaseToken {
     using SafeMath for uint256;
 
-    uint256 public constant VERSION = 7;
+    uint256 public constant VERSION = 8;
 
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
