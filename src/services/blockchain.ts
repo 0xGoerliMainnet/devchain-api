@@ -909,15 +909,13 @@ class service_blockchain_init {
       'utf-8'
     );
 
-    console.log(source_code);
-
     const form: string = `contractaddress=${
       credentials.contract_address
     }&apikey=${
       chains[credentials.chain_id].api_key
     }&codeformat=solidity-single-file&contractname=${
       factory[credentials.type].contract_name
-    }&optimizationused=0&compilerversion=${
+    }&compilerversion=${
       factory[credentials.type].version
     }&sourceCode=${source_code}&module=contract&action=verifysourcecode`;
 
