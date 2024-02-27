@@ -5,15 +5,10 @@
 
 // pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-
 /**
     @dev Interface of the ERC20 standard as defined in the EIP.
 */
 
-/*
 interface IERC20 {
    
     event Transfer(address indexed from, address indexed to, uint256 value);
@@ -39,9 +34,7 @@ interface IERC20 {
     
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
 }
-*/
 
-/*
 abstract contract Context {
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
@@ -51,9 +44,7 @@ abstract contract Context {
         return msg.data;
     }
 }
-*/
 
-/*
 abstract contract Ownable is Context {
     address private _owner;
 
@@ -98,9 +89,7 @@ abstract contract Ownable is Context {
         emit OwnershipTransferred(oldOwner, newOwner);
     }
 }
-*/
 
-/*
 library SafeMath {
     function tryAdd(uint256 a, uint256 b) internal pure returns (bool, uint256) {
         unchecked {
@@ -188,9 +177,6 @@ library SafeMath {
         }
     }
 }
-*/
-
-pragma solidity =0.8.4;
 
 enum TokenType {
     standard,
@@ -212,10 +198,12 @@ abstract contract BaseToken {
     );
 }
 
+pragma solidity =0.8.4;
+
 contract StandardToken is IERC20, Ownable, BaseToken {
     using SafeMath for uint256;
 
-    uint256 public constant VERSION = 4;
+    uint256 public constant VERSION = 7;
 
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
@@ -412,4 +400,3 @@ contract StandardToken is IERC20, Ownable, BaseToken {
         uint256 amount
     ) internal virtual {}
 }
-
