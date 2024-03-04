@@ -610,7 +610,7 @@ class service_blockchain_init {
       .then((res: any) => {
         this.tokens['1'].push({
           chain_id: 1,
-          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
+          img: '/images/ethereum.png',
           address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
           name: 'Ethereum',
           symbol: 'ETH',
@@ -636,7 +636,7 @@ class service_blockchain_init {
       .then((res: any) => {
         this.tokens['56'].push({
           chain_id: 56,
-          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+          img: '/images/bnb.png',
           address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
           name: 'BNB',
           symbol: 'BNB',
@@ -714,7 +714,7 @@ class service_blockchain_init {
       .then((res: any) => {
         this.tokens['42161'].push({
           chain_id: 42161,
-          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png',
+          img: '/images/arbitrum.png',
           address: '0x912Ce59144191c1204e64559fe8253a0e49e6548',
           name: 'Arbitrum',
           symbol: 'ARB',
@@ -764,7 +764,7 @@ class service_blockchain_init {
       .then((res: any) => {
         this.tokens['43114'].push({
           chain_id: 43114,
-          img: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png',
+          img: '/images/avalanche.png',
           address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
           name: 'Avalanche',
           symbol: 'AVAX',

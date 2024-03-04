@@ -129,7 +129,8 @@ function bind_auth_routes(
             .setCookie(config.env.SESSION_NAME, result.sid, {
               httpOnly: true,
               secure: true,
-              //host: config.env.URL_UI,
+              domain: config.env.URL_UI,
+              host: config.env.URL_UI,
               path: '/',
             })
             .send(result.user);
@@ -163,7 +164,8 @@ function bind_auth_routes(
             .setCookie(config.env.SESSION_NAME, result.sid, {
               httpOnly: true,
               secure: true,
-              //host: config.env.URL_UI,
+              domain: config.env.URL_UI,
+              host: config.env.URL_UI,
               path: '/',
             })
             .send(result.user);
