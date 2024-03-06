@@ -382,6 +382,24 @@ function bind_blockchain_routes(
       },
     },
 
+    audits_get: {
+      method: 'GET',
+      url: '/v1' + config.endpoints.blockchain_audits,
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          ...request.body,
+        };
+
+        try {
+          const result = await services.blockchain.audits_get(credentials);
+
+          return result;
+        } catch (err: any) {
+          reply.status(422).send(err);
+        }
+      },
+    },
+
     // #service: CoinGecko.com
     get_tokens: {
       method: 'GET',

@@ -995,6 +995,17 @@ class service_blockchain_init {
     return audits;
   }
 
+  async audits_get(credentials: any): Promise<any> {
+    const audits_hash = await this.options.redis.hGetAll('audits');
+    const audits: any = [];
+
+    for (const key in audits_hash) {
+      audits.push(JSON.parse(audits_hash[key]));
+    }
+
+    return audits;
+  }
+
   async swap_quote(credentials: any): Promise<any | null> {
     await this.validator.swap_quote(credentials, this.chains);
 
