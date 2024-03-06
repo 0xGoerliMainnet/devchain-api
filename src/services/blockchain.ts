@@ -928,6 +928,73 @@ class service_blockchain_init {
     return res.data;
   }
 
+  async audits_create(credentials: any): Promise<any> {
+    await this.validator.audits_create(credentials);
+
+    // write all audits hash into buffer
+    const audits_hash = await this.options.redis.hGetAll('audits');
+    let audits: any = [];
+
+    // convert audit hashes into array as objects
+    // '0x123': { address: '0x123' } => [{ address: '0x123' }]
+    for (const key in audits_hash) {
+      audits.push(JSON.parse(audits_hash[key]));
+    }
+
+    // filter existing audits incase they include incoming audit address
+    audits = audits.filter((current: any, index: number) => {
+      if (current.address.toLowerCase() !== credentials.address.toLowerCase()) {
+        return current;
+      }
+    });
+
+    // push new audit
+    audits.push({
+      address: credentials.address.toLowerCase(),
+      chain_id: credentials.chain_id,
+      created_at: new Date(),
+    });
+
+    // sort audits by date
+    for (let i: number = 0; i < audits.length; i++) {
+      for (let j: number = 0; j < audits.length; j++) {
+        if (audits[j + 1]) {
+          const current: any = audits[j];
+          const next: any = audits[j + 1];
+
+          if (
+            new Date(current.created_at).valueOf() <
+            new Date(next.created_at).valueOf()
+          ) {
+            audits[j] = next;
+            audits[j + 1] = current;
+          }
+        }
+      }
+    }
+
+    // limit length of audits by offset
+    if (audits.length > 20) {
+      audits.length = 20;
+    }
+
+    // delete all audits
+    for (let i: number = 0; i < audits.length; i++) {
+      await this.options.redis.hDel('audits', audits[i].address.toLowerCase());
+    }
+
+    // set new  audits
+    for (let i: number = 0; i < audits.length; i++) {
+      await this.options.redis.hSet(
+        'audits',
+        audits[i].address.toLowerCase(),
+        JSON.stringify(audits[i])
+      );
+    }
+
+    return audits;
+  }
+
   async swap_quote(credentials: any): Promise<any | null> {
     await this.validator.swap_quote(credentials, this.chains);
 

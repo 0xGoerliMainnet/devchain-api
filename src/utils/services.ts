@@ -1506,6 +1506,45 @@ export class validator_blockchain_init {
     }
   }
 
+  async audits_create(credentials: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'audits-create' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials.address || !credentials.chain_id) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    const res = await axios.get(
+      'https://api.gopluslabs.io/api/v1/token_security/' +
+        credentials.chain_id +
+        '?contract_addresses=' +
+        credentials.address
+    );
+
+    if (!res.data.result) {
+      throw {
+        message: res.data.message,
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!res.data.result[credentials.address.toLowerCase()]) {
+      throw {
+        message: 'Chain might be wrong for this address',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+  }
+
   async swap_quote(credentials: any, chains: any): Promise<any> {
     const err = { section: 'blockchain', type: 'swap-quote' };
 

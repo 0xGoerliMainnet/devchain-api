@@ -51,9 +51,6 @@ const config: config_i = {
 
     // BLOCKCHAIN ENDPOINTS
 
-    // tokens
-    blockchain_tokens: '/tokens',
-
     // GoPlusLabs
     blockchain_token_security: '/token_security/:chain_id',
     blockchain_address_security: '/address_security/:address',
@@ -64,6 +61,8 @@ const config: config_i = {
     blockchain_rugpull_detecting: '/rugpull_detecting/:chain_id',
     blockchain_input_decode: '/input_decode',
 
+    blockchain_tokens: '/tokens',
+    blockchain_audits: '/audits',
     blockchain_factory: '/factory',
 
     // 0x API
