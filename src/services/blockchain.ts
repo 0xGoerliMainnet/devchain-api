@@ -951,6 +951,8 @@ class service_blockchain_init {
     // push new audit
     audits.push({
       address: credentials.address.toLowerCase(),
+      name: credentials.name,
+      symbol: credentials.symbol,
       chain_id: credentials.chain_id,
       created_at: new Date(),
     });
