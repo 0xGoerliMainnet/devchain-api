@@ -515,8 +515,16 @@ function bind_blockchain_routes(
     seed_sales_get: {
       method: 'GET',
       url: '/v1' + config.endpoints.blockchain_seed_sales,
+      schema: {
+        querystring: {
+          from: { type: config.types.string },
+          hash: { type: config.types.string },
+        },
+      },
       handler: async function (request: any, reply: any) {
         const credentials: any = {
+          from: request.query.from,
+          hash: request.query.hash,
           ip: request.ip,
         };
 

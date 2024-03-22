@@ -1064,9 +1064,6 @@ class service_blockchain_init {
     await this.validator.seed_sales_create(credentials);
 
     const doc = UTILS_SERVICES.create_seed_sale_doc(credentials, this.options);
-
-    console.log(doc);
-
     const result = await this.options.db.seed_sales.insertOne(doc);
 
     return {
@@ -1079,7 +1076,7 @@ class service_blockchain_init {
     await this.validator.seed_sales_get(credentials);
 
     const seed_sales = await this.options.seed_sales
-      .find({ from: credentials.from })
+      .find({ $or: [{ from: credentials.from }, { hash: credentials.hash }] })
       .toArray();
 
     return seed_sales;

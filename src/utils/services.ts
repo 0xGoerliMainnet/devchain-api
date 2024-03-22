@@ -1596,6 +1596,19 @@ export class validator_blockchain_init {
       };
     }
 
+    if (
+      typeof credentials.hash !== config.types.string ||
+      typeof credentials.from !== config.types.string ||
+      typeof credentials.value !== config.types.string
+    ) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    credentials.from = credentials.from.toLowerCase();
+
     const captcha_body: string =
       'response=' +
       credentials.captcha_token +
@@ -1672,7 +1685,6 @@ export function create_seed_sale_doc(
     hash: credentials.hash,
     value: credentials.value,
     from: credentials.from,
-    illegal: false,
     fulfilled: false,
     created_at: new Date(),
     updated_at: new Date(),
