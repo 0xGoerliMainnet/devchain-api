@@ -913,8 +913,6 @@ export async function create_user_doc(
 
     img: '',
 
-    favs: '',
-
     ref_code: ref_code,
     ref_from: ref_from,
 
@@ -1597,6 +1595,36 @@ export class validator_blockchain_init {
         code: `${err.section}:${err.type}`,
       };
     }
+
+    const captcha_body: string =
+      'response=' +
+      credentials.captcha_token +
+      '&secret=' +
+      config.env.SECRET_KEY_CAPTCHA;
+
+    const catpcha_response: any = await axios.post(
+      'https://api.hcaptcha.com/siteverify',
+      captcha_body,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+
+    if (!catpcha_response) {
+      throw {
+        message: 'Captcha didnt succeed',
+        type: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!catpcha_response.data.success) {
+      throw {
+        message: 'Captcha didnt succeed',
+        type: `${err.section}:${err.type}`,
+      };
+    }
   }
 
   async seed_sales_get(credentials: any): Promise<any> {
@@ -1636,10 +1664,10 @@ export class validator_blockchain_init {
   }
 }
 
-export async function create_seed_sale_doc(
+export function create_seed_sale_doc(
   credentials: any,
   options: options_i
-): Promise<any> {
+): any {
   const doc: any = {
     hash: credentials.hash,
     value: credentials.value,
