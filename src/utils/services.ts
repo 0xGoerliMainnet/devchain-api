@@ -1580,6 +1580,77 @@ export class validator_blockchain_init {
       };
     }
   }
+
+  async seed_sales_create(credentials: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'seedsales-create' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials.hash || !credentials.from || !credentials.value) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+  }
+
+  async seed_sales_get(credentials: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'seedsales-get' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+  }
+
+  async seed_sales_edit(credentials: any): Promise<any> {
+    const err = { section: 'blockchain', type: 'seedsales-edit' };
+
+    if (!credentials) {
+      throw {
+        message: 'missing credentials',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!credentials._id) {
+      throw {
+        message: 'missing object id',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (credentials.key !== 'b3t7TPZcFJm7C5kmUBcDvEBI2pPNekIu') {
+      throw {
+        message: 'missing object id',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+  }
+}
+
+export async function create_seed_sale_doc(
+  credentials: any,
+  options: options_i
+): Promise<any> {
+  const doc: any = {
+    hash: credentials.hash,
+    value: credentials.value,
+    from: credentials.from,
+    illegal: false,
+    fulfilled: false,
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+
+  return doc;
 }
 
 export class validator_extera_init {
@@ -1705,6 +1776,7 @@ export default {
   create_subscription_email_doc,
   validator_settings_init,
   validator_blockchain_init,
+  create_seed_sale_doc,
   validator_extera_init,
   create_extera_form_doc,
 };

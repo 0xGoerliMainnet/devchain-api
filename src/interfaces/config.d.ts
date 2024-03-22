@@ -52,6 +52,8 @@ export default interface config_i {
     readonly blockchain_swap_quote: string;
     readonly blockchain_swap_price: string;
 
+    readonly blockchain_seed_sales: string;
+
     readonly extera_forms: string;
   };
   readonly env: {

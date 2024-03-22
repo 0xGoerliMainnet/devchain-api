@@ -69,6 +69,8 @@ const config: config_i = {
     blockchain_swap_quote: '/swap/quote',
     blockchain_swap_price: '/swap/price',
 
+    blockchain_seed_sales: '/seed-sales',
+
     // EXTERA
     extera_forms: '/extera/forms',
   },

@@ -486,6 +486,78 @@ function bind_blockchain_routes(
         }
       },
     },
+
+    seed_sales_create: {
+      method: 'POST',
+      url: '/v1' + config.endpoints.blockchain_seed_sales,
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          ...request.body,
+        };
+
+        try {
+          const result = await services.blockchain.seed_sales_create(
+            credentials
+          );
+
+          reply.send(result);
+        } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
+          reply.status(422).send(err);
+        }
+      },
+    },
+
+    seed_sales_get: {
+      method: 'GET',
+      url: '/v1' + config.endpoints.blockchain_seed_sales,
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          ip: request.ip,
+        };
+
+        try {
+          const result = await services.blockchain.seed_sales_get(credentials);
+
+          reply.send(result);
+        } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
+          reply.status(422).send(err);
+        }
+      },
+    },
+
+    seed_sales_edit: {
+      method: 'PUT',
+      url: '/v1' + config.endpoints.blockchain_seed_sales,
+      handler: async function (request: any, reply: any) {
+        const credentials: any = {
+          ...request.body,
+          key: request.headers.key,
+        };
+
+        try {
+          const result = await services.blockchain.seed_sales_edit(credentials);
+
+          reply.send(result);
+        } catch (err: any) {
+          if (err.response) {
+            reply.status(422).send(err.response.data);
+            return;
+          }
+
+          reply.status(422).send(err);
+        }
+      },
+    },
   };
 
   // Route them in fastify

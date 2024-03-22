@@ -1059,6 +1059,32 @@ class service_blockchain_init {
 
     return res.data;
   }
+
+  async seed_sales_create(credentials: any): Promise<any> {
+    await this.validator.seed_sales_create(credentials);
+
+    const doc = UTILS_SERVICES.create_seed_sale_doc(credentials, this.options);
+    const result = await this.options.db.seed_sales.insertOne(doc);
+
+    return {
+      ...doc,
+      _id: result.insertedId,
+    };
+  }
+
+  async seed_sales_get(credentials: any): Promise<any> {
+    await this.validator.seed_sales_get(credentials);
+
+    const seed_sales = await this.options.seed_sales
+      .find({ from: credentials.from })
+      .toArray();
+
+    return seed_sales;
+  }
+
+  async seed_sales_edit(credentials: any): Promise<any> {
+    await this.validator.seed_sales_edit(credentials);
+  }
 }
 
 export default service_blockchain_init;
