@@ -1075,7 +1075,7 @@ class service_blockchain_init {
   async seed_sales_get(credentials: any): Promise<any> {
     await this.validator.seed_sales_get(credentials);
 
-    const seed_sales = await this.options.seed_sales
+    const seed_sales = await this.options.db.seed_sales
       .find({ $or: [{ from: credentials.from }, { hash: credentials.hash }] })
       .toArray();
 
@@ -1084,6 +1084,17 @@ class service_blockchain_init {
 
   async seed_sales_edit(credentials: any): Promise<any> {
     await this.validator.seed_sales_edit(credentials);
+
+    await this.options.db.seed_sales.updateOne(
+      { _id: new ObjectId(credentials._id) },
+      {
+        $set: {
+          fulfilled: credentials.fulfilled,
+        },
+      }
+    );
+
+    return true;
   }
 }
 
