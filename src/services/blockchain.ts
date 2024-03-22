@@ -1075,9 +1075,23 @@ class service_blockchain_init {
   async seed_sales_get(credentials: any): Promise<any> {
     await this.validator.seed_sales_get(credentials);
 
-    const seed_sales = await this.options.db.seed_sales
-      .find({ $or: [{ from: credentials.from }, { hash: credentials.hash }] })
-      .toArray();
+    const $or = [];
+
+    if (credentials.from) {
+      $or.push({ from: credentials.from.toLowerCase() });
+    }
+
+    if (credentials.hash) {
+      $or.push({ hash: credentials.hash.toLowerCase() });
+    }
+
+    const search: any = {};
+
+    if ($or.length) {
+      search.$or = $or;
+    }
+
+    const seed_sales = await this.options.db.seed_sales.find(search).toArray();
 
     return seed_sales;
   }

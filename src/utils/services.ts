@@ -1607,8 +1607,6 @@ export class validator_blockchain_init {
       };
     }
 
-    credentials.from = credentials.from.toLowerCase();
-
     const captcha_body: string =
       'response=' +
       credentials.captcha_token +
@@ -1668,9 +1666,9 @@ export class validator_blockchain_init {
       };
     }
 
-    if (credentials.key !== 'b3t7TPZcFJm7C5kmUBcDvEBI2pPNekIu') {
+    if (credentials.key !== config.env.SESSION_SECRET) {
       throw {
-        message: 'missing object id',
+        message: 'missing secret',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1682,9 +1680,9 @@ export function create_seed_sale_doc(
   options: options_i
 ): any {
   const doc: any = {
-    hash: credentials.hash,
+    hash: credentials.hash.toLowerCase(),
     value: credentials.value,
-    from: credentials.from,
+    from: credentials.from.toLowerCase(),
     fulfilled: false,
     created_at: new Date(),
     updated_at: new Date(),
