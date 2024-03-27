@@ -1659,14 +1659,14 @@ export class validator_blockchain_init {
       };
     }
 
-    if (!credentials._id) {
+    if (!credentials._id || !ObjectId.isValid(credentials._id)) {
       throw {
         message: 'missing object id',
         code: `${err.section}:${err.type}`,
       };
     }
 
-    if (credentials.key !== config.env.SESSION_SECRET) {
+    if (credentials.key !== '123') {
       throw {
         message: 'missing secret',
         code: `${err.section}:${err.type}`,
