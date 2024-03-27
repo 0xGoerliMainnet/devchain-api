@@ -1666,7 +1666,7 @@ export class validator_blockchain_init {
       };
     }
 
-    if (credentials.key !== '123') {
+    if (credentials.key !== config.env.SESSION_SECRET) {
       throw {
         message: 'missing secret',
         code: `${err.section}:${err.type}`,
