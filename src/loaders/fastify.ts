@@ -28,8 +28,6 @@ async function load_fastify(options: any): Promise<FastifyInstance> {
     },
   });
 
-  // fastify middleware plugin registrations
-
   await server.register(fastify_helmet, { global: true });
 
   await server.register(fastify_static, {
@@ -38,19 +36,7 @@ async function load_fastify(options: any): Promise<FastifyInstance> {
     constraints: { host: config.env.URL_UI }, // optional: default {}
   });
 
-  await server.register(fastify_cors, {
-    //credentials: true, // cookie acceptance
-    origin: [
-      '*',
-      /*
-      'http://localhost:3000',
-      'https://' + config.env.URL_UI,
-      'https://www.' + config.env.URL_UI,
-      'https://admin.' + config.env.URL_UI,
-      'https://swap.' + config.env.URL_UI,
-      */
-    ],
-  });
+  await server.register(fastify_cors, { origin: '*' });
 
   await server.register(fastify_cookie, {
     secret: config.env.SESSION_SECRET,

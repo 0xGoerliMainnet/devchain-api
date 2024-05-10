@@ -24,8 +24,8 @@ $ # sudo apt install nginx (optional but recommended)
 $ # sudo npm install -g pm2 (optional but recommended)
 
 # Project installation
-$ git clone https://github.com/RuzgarAtaOzkan/linux-web-server.git
-$ cd ./linux-web-server
+$ git clone https://github.com/DevChainNet/devchain-api.git
+$ cd ./devchain-api
 $ npm install
 $ npm run build
 $ npm run start
@@ -49,8 +49,8 @@ PERM_ADMIN=123
 PERM_USER=123
 
 EMAIL_HOST=smtp.gmail.com
-EMAIL_NO_REPLY_USERNAME=no-reply@domain.com
-EMAIL_NO_REPLY_PASSWORD=
+EMAIL_USERNAME=no-reply@domain.com
+EMAIL_PASSWORD=
 
 URL_API=api.domain.com
 URL_UI=domain.com

@@ -67,7 +67,7 @@ class service_auth_init {
   async edit_profile(credentials: any): Promise<any> {
     await this.validator.edit_profile(credentials, this.options);
 
-    let image_url: string = '';
+    let img: string = '';
     if (credentials.img_base64) {
       const base64_buffer: string[] = credentials.img_base64.split(';base64,');
       const base64_type: string = base64_buffer[0];
@@ -93,27 +93,37 @@ class service_auth_init {
         function (err: any) {}
       );
 
-      image_url = config.env.URL_API + '/public/images/' + file_name;
+      img = 'https://' + config.env.URL_API + '/public/images/' + file_name;
     }
 
+    let api_key: string = '';
+    if (credentials.api_key) {
+      api_key = await UTILS_SERVICES.generate_api_key(this.options);
+    }
+
+    let username_changed_at: Date | null = credentials.user.username_changed_at;
+    if (
+      credentials.username &&
+      credentials.username !== credentials.user.username
+    ) {
+      username_changed_at = new Date();
+    }
     // update user credentials
     await this.options.db.users.updateOne(
       { _id: credentials.user._id },
       {
         $set: {
-          name: credentials.name,
-          username: credentials.username,
+          name: credentials.name || credentials.user.name,
+          username: credentials.username || credentials.user.username,
+          username_changed_at: username_changed_at,
 
-          username_changed_at:
-            credentials.username !== credentials.user.username
-              ? new Date()
-              : credentials.user.username_changed_at,
+          phone: credentials.phone || credentials.user.phone,
+          img: img || credentials.user.img,
+          api_key: api_key || credentials.user.api_key,
+          wallet_address:
+            credentials.wallet_address || credentials.user.wallet_address,
 
-          phone: credentials.phone,
-
-          img: image_url ? image_url : credentials.user.img,
-
-          favs: credentials.favs,
+          updated_at: new Date(),
         },
       }
     );
@@ -121,8 +131,8 @@ class service_auth_init {
     credentials.user.name = credentials.name;
     credentials.user.username = credentials.username;
     credentials.user.phone = credentials.phone;
-    credentials.user.img = image_url ? image_url : credentials.user.img;
-    credentials.user.favs = credentials.favs;
+    credentials.user.img = img || credentials.user.img;
+    credentials.user.api_key = api_key || credentials.user.api_key;
 
     // create client user to send it back to client to see the updated values.
     const profile = UTILS_SERVICES.return_user_profile(credentials.user);

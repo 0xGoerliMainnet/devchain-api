@@ -6,14 +6,12 @@ import service_auth_init from 'services/auth';
 import service_mail_init from 'services/mail';
 import service_settings_init from 'services/settings';
 import service_blockchain_init from 'services/blockchain';
-import service_extera_init from 'services/extera';
 
 export interface services_i {
   auth: service_auth_init;
   mail: service_mail_init;
   settings: service_settings_init;
   blockchain: service_blockchain_init;
-  extera: service_extera_init;
 }
 
 export interface routes_i {

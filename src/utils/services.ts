@@ -13,13 +13,11 @@ import options_i from 'interfaces/common';
 import config from '../config';
 
 // COMMON UTILS
-import UTILS_COMMON from './common';
+import UTILS_COMMON, { str_remove_space } from './common';
 
-/**
- *
- * AUTH UTILS
- *
- */
+///////////////////////
+// AUTH UTILS
+///////////////////////
 export class validator_common_init {
   private options: any;
 
@@ -49,8 +47,7 @@ export class validator_common_init {
       !base64.startsWith('data:image/webp;base64,')
     ) {
       throw {
-        message:
-          'Invalid image file type (starts with data:image/{ext};base64,',
+        message: 'invalid file format',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -108,98 +105,117 @@ export class validator_auth_init {
   async edit_profile(credentials: any): Promise<void> {
     const err = { section: 'auth', type: 'profile-edit' };
 
-    if (!credentials) {
-      throw {
-        message: "User Credentials hasn't been provided",
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    credentials.name = UTILS_COMMON.str_remove_space(credentials.name);
-
-    credentials.username = UTILS_COMMON.str_remove_space(
-      credentials.username
-    ).toLowerCase();
-
-    credentials.phone = UTILS_COMMON.str_remove_space(credentials.phone);
-
-    if (!credentials.phone || !credentials.name || !credentials.username) {
-      throw {
-        message: 'Kimlik bilgileri sağlanmadı',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (
-      typeof credentials.name !== config.types.string ||
-      typeof credentials.username !== config.types.string ||
-      typeof credentials.phone !== config.types.string
-    ) {
-      throw {
-        message: 'Geçersiz tip kimilik bilgileri',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (
-      credentials.name.length > 50 ||
-      credentials.username.length > 50 ||
-      credentials.phone.length > 14
-    ) {
-      throw {
-        message: 'İsim çok uzun, lütfen daha kısa bir isim giriniz',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    /**
-     *     if (
-      !validator.isAlpha(UTILS_COMMON.str_remove_space(credentials.name, 'all'))
-    ) {
-      throw {
-        message: 'Geçersiz isim',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-     * 
-     */
-
-    if (
-      credentials.username.includes(' ') ||
-      !validator.isAlphanumeric(credentials.username)
-    ) {
-      throw {
-        message: 'Geçersiz kullanıcı adı',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!validator.isMobilePhone(credentials.phone)) {
-      throw {
-        message: 'Geçersiz telefon adresi',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (credentials.username !== credentials.user.username) {
-      const user_existing = await this.options.db.users.findOne({
-        username: credentials.username,
-      });
-
-      if (user_existing) {
+    if (credentials.name) {
+      if (typeof credentials.name !== config.types.string) {
         throw {
-          message: 'Bu kullanıcı adı alınmış',
+          message: 'invalid credentials',
+          type: `${err.section}:${err.type}`,
+        };
+      }
+
+      credentials.name = str_remove_space(credentials.name);
+
+      if (credentials.name.length > 50) {
+        throw {
+          message: 'name is too long',
+          type: `${err.section}:${err.type}`,
+        };
+      }
+    }
+
+    if (credentials.username) {
+      if (typeof credentials.username !== config.types.string) {
+        throw {
+          message: 'invalid username',
+          type: `${err.section}:${err.type}`,
+        };
+      }
+
+      credentials.username = str_remove_space(
+        credentials.username
+      ).toLowerCase();
+
+      if (credentials.username.length > 50) {
+        throw {
+          message: 'username is too long',
           type: `${err.section}:${err.type}`,
         };
       }
 
       if (
-        credentials.user.username_changed_at &&
-        Date.now() - credentials.user.username_changed_at.valueOf() <
-          config.times.one_day_ms * 30
+        credentials.username.includes(' ') ||
+        !validator.isAlphanumeric(credentials.username)
       ) {
         throw {
-          message: 'Kullanıcı adınızı sadece 30 günde bir değiştirebilirsiniz',
+          message: 'invalid username',
+          type: `${err.section}:${err.type}`,
+        };
+      }
+
+      if (credentials.username !== credentials.user.username) {
+        const user_existing = await this.options.db.users.findOne({
+          username: credentials.username,
+        });
+
+        if (user_existing) {
+          throw {
+            message: 'existing username',
+            type: `${err.section}:${err.type}`,
+          };
+        }
+
+        if (
+          credentials.user.username_changed_at &&
+          Date.now() - credentials.user.username_changed_at.valueOf() <
+            config.times.one_day_ms * 30
+        ) {
+          throw {
+            message: 'invalid username change date',
+            type: `${err.section}:${err.type}`,
+          };
+        }
+      }
+    }
+
+    if (credentials.phone) {
+      if (!validator.isMobilePhone(credentials.phone)) {
+        throw {
+          message: 'invalid phone',
+          type: `${err.section}:${err.type}`,
+        };
+      }
+
+      if (credentials.phone.length > 14) {
+        throw {
+          message: 'phone is too long',
+          type: `${err.section}:${err.type}`,
+        };
+      }
+    }
+
+    if (credentials.wallet_address) {
+      if (typeof credentials.wallet_address !== config.types.string) {
+        throw {
+          message: 'invalid wallet address',
+          type: `${err.section}:${err.type}`,
+        };
+      }
+
+      credentials.wallet_address = str_remove_space(credentials.wallet_address);
+
+      if (
+        !validator.isHexadecimal ||
+        !credentials.wallet_address.startsWith('0x')
+      ) {
+        throw {
+          message: 'invalid wallet address',
+          type: `${err.section}:${err.type}`,
+        };
+      }
+
+      if (credentials.wallet_address.length > 100) {
+        throw {
+          message: 'wallet address is too long',
           type: `${err.section}:${err.type}`,
         };
       }
@@ -213,20 +229,6 @@ export class validator_auth_init {
   async signup(credentials: any): Promise<void> {
     const err = { section: 'auth', type: 'signup' };
 
-    if (!credentials) {
-      throw {
-        message: 'Kimlik bilgieri sağlanmadı',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (typeof credentials !== config.types.object) {
-      throw {
-        message: 'Geçersiz kimlik bilgileri',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
     credentials.name = UTILS_COMMON.str_remove_space(credentials.name);
 
     credentials.email = UTILS_COMMON.str_remove_space(
@@ -239,22 +241,24 @@ export class validator_auth_init {
 
     credentials.phone = UTILS_COMMON.str_remove_space(credentials.phone);
 
+    /*
     if (!credentials.username) {
       let length: number = 8;
 
       credentials.username = UTILS_COMMON.random({ length: length });
-      let _existing_user = await this.options.db.users.findOne({
+      let existing_user = await this.options.db.users.findOne({
         username: credentials.username,
       });
 
-      while (_existing_user) {
+      while (existing_user) {
         length++;
         credentials.username = UTILS_COMMON.random({ length: length });
-        _existing_user = await this.options.db.users.findOne({
+        existing_user = await this.options.db.users.findOne({
           username: credentials.username,
         });
       }
     }
+    */
 
     if (
       !credentials.ip ||
@@ -266,14 +270,7 @@ export class validator_auth_init {
       !credentials.password_verification
     ) {
       throw {
-        message: 'Kimlik bilgileri yetersiz',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!credentials.captcha_token) {
-      throw {
-        message: 'Captcha is missing',
+        message: 'missing credentials',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -286,16 +283,15 @@ export class validator_auth_init {
       typeof credentials.phone !== config.types.string ||
       typeof credentials.password !== config.types.string ||
       typeof credentials.password_verification !== config.types.string
-      //typeof captcha_token !== config.types.string
     ) {
       throw {
-        message: 'Geçersiz kimlik bilgileri',
+        message: 'invalid credentials',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (!validator.isIP(credentials.ip)) {
-      throw { message: 'Geçersiz IP', type: `${err.section}:${err.type}` };
+      throw { message: 'invalid ip', type: `${err.section}:${err.type}` };
     }
 
     if (
@@ -306,52 +302,38 @@ export class validator_auth_init {
       credentials.password.length > 32
     ) {
       throw {
-        message: 'İsim veya şifre çok uzun',
+        message: 'credentials are too long',
         type: `${err.section}:${err.type}`,
       };
-    }
-
-    if (
-      !validator.isAlpha(UTILS_COMMON.str_remove_space(credentials.name, 'all'))
-    ) {
-      throw { message: 'Geçersiz isim', type: `${err.section}:${err.type}` };
     }
 
     if (!validator.isEmail(credentials.email)) {
       throw {
-        message: 'Geçersiz e-posta adresi',
+        message: 'invalid email',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (
-      !credentials.username ||
       credentials.username.includes(' ') ||
       !validator.isAlphanumeric(credentials.username)
     ) {
       throw {
-        message: 'Geçersiz kullanıcı adı',
+        message: 'invalid username',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (!validator.isMobilePhone(credentials.phone)) {
       throw {
-        message: 'Geçersiz telefon',
+        message: 'invalid phone',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (credentials.password.includes(' ')) {
       throw {
-        message: 'Şifre boşluk içeremez',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (credentials.password !== credentials.password_verification) {
-      throw {
-        message: 'Şifreler eşleşmiyor',
+        message: 'invalid password',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -360,7 +342,7 @@ export class validator_auth_init {
       !validator.isStrongPassword(credentials.password, this.password_config)
     ) {
       throw {
-        message: 'Zayıf parola',
+        message: 'weak password',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -371,7 +353,7 @@ export class validator_auth_init {
 
     if (existing_user) {
       throw {
-        message: 'Bu e-posta sistemde mevcut',
+        message: 'existing user',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -396,16 +378,9 @@ export class validator_auth_init {
       }
     );
 
-    if (!catpcha_response) {
-      throw {
-        message: 'Captcha didnt succeed',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
     if (!catpcha_response.data.success) {
       throw {
-        message: 'Captcha didnt succeed',
+        message: 'captcha fail',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -414,18 +389,9 @@ export class validator_auth_init {
   async signin(credentials: any): Promise<Document> {
     const err = { section: 'auth', type: 'signin' };
 
-    if (!credentials || typeof credentials !== config.types.object) {
-      throw {
-        message: "User credentials hasn't been provided",
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    const { ip, uid, password }: any = credentials;
-
     if (!credentials.ip || !credentials.uid || !credentials.password) {
       throw {
-        message: 'Missing credentials while signing in',
+        message: 'missing credentials',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -436,13 +402,9 @@ export class validator_auth_init {
       typeof credentials.password !== config.types.string
     ) {
       throw {
-        message: 'Given credentials are invalid',
+        message: 'invalid credentials',
         type: `${err.section}:${err.type}`,
       };
-    }
-
-    if (!validator.isIP(credentials.ip)) {
-      throw { message: 'IP is not valid', type: `${err.section}:${err.type}` };
     }
 
     const user: Document | null = await this.options.db.users.findOne({
@@ -454,7 +416,7 @@ export class validator_auth_init {
 
     if (!user) {
       throw {
-        message: 'Bu E-Posta ile Kullanıcı Bulunamadı',
+        message: 'missing user',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -464,7 +426,7 @@ export class validator_auth_init {
       Crypto.createHash('sha256').update(credentials.password).digest('hex')
     ) {
       throw {
-        message: 'E-Posta veya Şifre Yanlış',
+        message: 'wrong password',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -476,59 +438,36 @@ export class validator_auth_init {
     const types = config.types;
     const err = { section: 'auth', type: 'password-reset' };
 
-    if (!credentials || typeof credentials !== types.object) {
+    const { password, token } = credentials;
+
+    if (!password || !token) {
       throw {
-        message: "User Credentials hasn't been provided",
+        message: 'missing credentials',
         type: `${err.section}:${err.type}`,
       };
     }
 
-    const { password, password_verification, token } = credentials;
-
-    if (!password || !password_verification || !token) {
+    if (typeof password !== types.string || typeof token !== types.string) {
       throw {
-        message: "User Credentials hasn't been provided",
+        message: 'invalid credentials',
         type: `${err.section}:${err.type}`,
       };
     }
 
-    if (
-      typeof password !== types.string ||
-      typeof password_verification !== types.string ||
-      typeof token !== types.string
-    ) {
+    if (password.length > 50 || token.length > 256) {
       throw {
-        message: "User Credentials hasn't been provided",
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (
-      password.length > 50 ||
-      password_verification.length > 50 ||
-      token.length > 256
-    ) {
-      throw {
-        message: "User Credentials hasn't been provided",
+        message: 'credentials are too long',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (password.includes(' ')) {
-      throw { message: 'Invalid password', type: `${err.section}:${err.type}` };
-    }
-
-    if (password !== password_verification) {
-      throw {
-        message: "Passwords doesn't match",
-        type: `${err.section}:${err.type}`,
-      };
+      throw { message: 'invalid password', type: `${err.section}:${err.type}` };
     }
 
     if (!validator.isStrongPassword(password, this.password_config)) {
       throw {
-        message:
-          'Password is weak. It should contain at least One Upper Case Character, One Number, One Special Character and it should be 8 characters long.',
+        message: 'weak password',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -539,28 +478,28 @@ export class validator_auth_init {
 
     if (!user) {
       throw {
-        message: "User with this token couldn't be found",
+        message: 'missing user',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (!user.password_reset_token || !user.password_reset_token_exp_at) {
       throw {
-        message: "User credentials with this token couldn't be found",
+        message: 'missing token',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (user.password_reset_token !== token) {
       throw {
-        message: 'Wrong Token specified while changing the password',
+        message: 'invalid token',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (user.password_reset_token_exp_at.valueOf() < Date.now()) {
       throw {
-        message: 'Token has expired',
+        message: 'expired token',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -569,41 +508,28 @@ export class validator_auth_init {
   async change_password(credentials: any): Promise<void> {
     const err = { section: 'auth', type: 'password-change' };
 
-    if (!credentials || typeof credentials !== config.types.object) {
-      throw {
-        message: 'Invalid credentials',
-        type: `${err.section}:${err.type}`,
-      };
-    }
+    const { user, password, new_password }: any = credentials;
 
-    const { user, password, new_password, new_password_verification }: any =
-      credentials;
-
-    if (!password || !new_password || !new_password_verification) {
+    if (!password || !new_password) {
       throw {
-        message: 'Credential properties are missing',
+        message: 'missing credentials',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (
       typeof password !== config.types.string ||
-      typeof new_password !== config.types.string ||
-      typeof new_password_verification !== config.types.string
+      typeof new_password !== config.types.string
     ) {
       throw {
-        message: 'Credential properties are missing',
+        message: 'invalid credentials',
         type: `${err.section}:${err.type}`,
       };
     }
 
-    if (
-      password.length > 50 ||
-      new_password.length > 50 ||
-      new_password_verification.length > 256
-    ) {
+    if (password.length > 50 || new_password.length > 50) {
       throw {
-        message: 'Credential properties are invalid',
+        message: 'credentials are too long',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -615,24 +541,16 @@ export class validator_auth_init {
       };
     }
 
-    if (new_password !== new_password_verification) {
-      throw {
-        message: "Passwords doesn't match",
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
     if (
       user.password !==
       Crypto.createHash('sha256').update(password).digest('hex')
     ) {
-      throw { message: 'Wrong password', type: `${err.section}:${err.type}` };
+      throw { message: 'wrong password', type: `${err.section}:${err.type}` };
     }
 
     if (!validator.isStrongPassword(new_password, this.password_config)) {
       throw {
-        message:
-          'Password is weak. It should contain at least One Upper Case Character, One Number, One Special Character and it should be 8 characters long.',
+        message: 'weak password',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -641,23 +559,16 @@ export class validator_auth_init {
   async change_email(credentials: any): Promise<void> {
     const err = { section: 'auth', type: 'email-change' };
 
-    if (!credentials) {
-      throw {
-        message: "User Credentials hasn't been provided",
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
     if (typeof credentials.email !== config.types.string) {
       throw {
-        message: 'Credentials are invalid',
+        message: 'invalid credentials',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (credentials.email.length > 256) {
       throw {
-        message: 'Email is too long',
+        message: 'credentials are too long',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -665,7 +576,7 @@ export class validator_auth_init {
     credentials.email = UTILS_COMMON.str_remove_space(credentials.email);
 
     if (!validator.isEmail(credentials.email)) {
-      throw { message: 'Email is invalid', type: `${err.section}:${err.type}` };
+      throw { message: 'invalid email', type: `${err.section}:${err.type}` };
     }
 
     const existing_user: Document | null = await this.options.db.users.findOne({
@@ -674,7 +585,7 @@ export class validator_auth_init {
 
     if (existing_user) {
       throw {
-        message: 'User with this email already in use',
+        message: 'existing user',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -685,28 +596,21 @@ export class validator_auth_init {
 
     if (!token || token.includes(' ')) {
       throw {
-        message: "Token hasn't been provided",
+        message: 'missing credentials',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (typeof token !== config.types.string) {
       throw {
-        message: 'Token is in Invalid Type',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!validator.isAlphanumeric(token)) {
-      throw {
-        message: 'Token is in invalid format',
+        message: 'invalid credentials',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (token.length > 256) {
       throw {
-        message: 'Token is too long',
+        message: 'credentials are too long',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -717,25 +621,25 @@ export class validator_auth_init {
 
     if (
       !user ||
-      !user.email_verification_token_exp_at ||
-      !user.email_verification_token
+      !user.email_verification_token ||
+      !user.email_verification_token_exp_at
     ) {
       throw {
-        message: 'User with this token is missing',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (user.email_verification_token_exp_at.valueOf() < Date.now()) {
-      throw {
-        message: 'Token has expired',
+        message: 'missing user',
         type: `${err.section}:${err.type}`,
       };
     }
 
     if (user.email_verification_token !== token) {
       throw {
-        message: "Tokens doesn't match",
+        message: 'invalid token',
+        type: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (user.email_verification_token_exp_at.valueOf() < Date.now()) {
+      throw {
+        message: 'expired token',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -825,7 +729,7 @@ export async function generate_password_reset_token(
   return token;
 }
 
-async function generate_api_key(options: any): Promise<string> {
+export async function generate_api_key(options: any): Promise<string> {
   const LENGTH: number = 40; // safubase_123cdD893dS679sdd
   const BUFFER: string[] =
     'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890'.split('');
@@ -918,6 +822,8 @@ export async function create_user_doc(
 
     api_key: api_key,
 
+    wallet_address: '',
+
     ip: credentials.ip,
 
     created_at: new Date(),
@@ -941,14 +847,13 @@ export function return_user_profile(user: any) {
     ref_code: user.ref_code,
     ref_from: user.ref_from,
     api_key: user.api_key,
+    wallet_address: user.wallet_address,
   };
 }
 
-/**
- *
- * MAIL UTILS
- *
- */
+///////////////////////
+// MAIL UTILS
+///////////////////////
 export class validator_mail_init {
   private options: any;
 
@@ -961,7 +866,7 @@ export class validator_mail_init {
 
     if (!payload.email || !payload.token || payload.token.includes(' ')) {
       throw {
-        message: "Email or token hasn't been provided",
+        message: 'missing credentials',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -971,25 +876,18 @@ export class validator_mail_init {
       typeof payload.token !== config.types.string
     ) {
       throw {
-        message: 'Email or Token is in invalid type',
+        message: 'invalid credentials',
         code: `${err.section}:${err.type}`,
       };
     }
 
     if (!validator.isEmail(payload.email)) {
-      throw { message: 'Email is invalid', code: `${err.section}:${err.type}` };
-    }
-
-    if (!validator.isAlphanumeric(payload.token)) {
-      throw {
-        message: 'Token is in invalid format',
-        code: `${err.section}:${err.type}`,
-      };
+      throw { message: 'invalid email', code: `${err.section}:${err.type}` };
     }
 
     if (payload.token.length > 256) {
       throw {
-        message: 'Token is too long',
+        message: 'credentials are too long',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1000,14 +898,7 @@ export class validator_mail_init {
 
     if (!user) {
       throw {
-        message: 'User with this token is missing',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (user.email_verified) {
-      throw {
-        message: 'Email is already been verified',
+        message: 'missing user',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1018,22 +909,15 @@ export class validator_mail_init {
   async resend_verification_link(email: string): Promise<Document> {
     const err = { section: 'mail', type: 'resend-verification-link' };
 
-    if (!email) {
+    if (email.length > 200) {
       throw {
-        message: "Email  hasn't been provided",
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (typeof email !== config.types.string) {
-      throw {
-        message: 'Email is in Invalid type',
+        message: 'credentials are too long',
         code: `${err.section}:${err.type}`,
       };
     }
 
     if (!validator.isEmail(email)) {
-      throw { message: 'Email is invalid', code: `${err.section}:${err.type}` };
+      throw { message: 'invalid email', code: `${err.section}:${err.type}` };
     }
 
     const user: Document | null = await this.options.db.users.findOne({
@@ -1042,14 +926,14 @@ export class validator_mail_init {
 
     if (!user) {
       throw {
-        message: 'User with this token is missing',
+        message: 'missing user',
         code: `${err.section}:${err.type}`,
       };
     }
 
     if (user.email_verified) {
       throw {
-        message: 'Email is already been verified',
+        message: 'email is already verified',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1060,29 +944,15 @@ export class validator_mail_init {
   async send_password_reset_link(email: string): Promise<Document> {
     const err = { section: 'mail', type: 'send-password-reset-link' };
 
-    if (!email) {
-      throw {
-        message: "Email  hasn't been provided",
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (typeof email !== config.types.string) {
-      throw {
-        message: 'Email is in Invalid type',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
     if (email.length > 200) {
       throw {
-        message: 'Email is too long',
+        message: 'credentials are too long',
         code: `${err.section}:${err.type}`,
       };
     }
 
     if (!validator.isEmail(email)) {
-      throw { message: 'Email is invalid', code: `${err.section}:${err.type}` };
+      throw { message: 'invalid email', code: `${err.section}:${err.type}` };
     }
 
     const user: Document | null = await this.options.db.users.findOne({
@@ -1091,7 +961,7 @@ export class validator_mail_init {
 
     if (!user) {
       throw {
-        message: "User with this email couldn't be found",
+        message: 'missing user',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1102,39 +972,25 @@ export class validator_mail_init {
   async add_subscription_email(credentials: any): Promise<void> {
     const err = { section: 'mail', type: 'add-subscription-email' };
 
-    if (!credentials.email) {
+    if (credentials.email.length > 200) {
       throw {
-        message: "Email  hasn't been provided",
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (typeof credentials.email !== config.types.string) {
-      throw {
-        message: 'Email is in Invalid type',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (credentials.email.length > 300) {
-      throw {
-        message: 'Email is too long',
+        message: 'credentials are too long',
         code: `${err.section}:${err.type}`,
       };
     }
 
     if (!validator.isEmail(credentials.email)) {
-      throw { message: 'Email is invalid', code: `${err.section}:${err.type}` };
+      throw { message: 'invalid email', code: `${err.section}:${err.type}` };
     }
 
     const existing_email: Document | null =
-      await this.options.db.subscription_emails.findOne({
+      await this.options.db.emails.findOne({
         email: credentials.email,
       });
 
     if (existing_email) {
       throw {
-        message: 'Email already exists',
+        message: 'existing email',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1145,52 +1001,52 @@ export function generate_html(type = 'email-verify', payload: any): string {
   switch (type) {
     case 'email-verify':
       return (
-        '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"><title>' +
+        '<!DOCTYPE html><html lang="en"> <head> <meta charset="UTF-8"/> <meta http-equiv="X-UA-Compatible" content="IE=edge"/> <meta name="viewport" content="width=device-width,initial-scale=1"/> <title>' +
         config.env.URL_UI +
-        '</title><style rel="stylesheet">*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;text-decoration:none}body{max-width:520px}.content-area{border:1px solid #dbdbdb;border-radius:5px;max-width:500px}.main-logo{width:100%;position:relative}.main-logo>a{background-color:#e2dacd;display:block;width:100%;height:70px;text-align:center;border-radius:4px;font-weight:700;color:#363636;font-size:20px;position:relative;display:block}.main-logo>a>img{display:block;height:60%;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}.content-area>h1{margin:2rem 2rem 0 2rem;font-size:18px;text-align:center}.content-area>.p{margin:2rem 2rem 0 2rem;text-align:center;font-size:14px}.mainbutton-wrapper{text-align:center;margin:2rem}.mainbutton{text-decoration:none;font-weight:700;color:#e2dacd;background-color:#002746;border-radius:4px;font-weight:700;padding:.6rem 1.4rem}.subtext{font-size:12px}.p>.username{font-weight:700}.footer{text-align:center;margin:2rem;font-size:12px}</style></head><body><section class="section"><div class="content-area"><div class="main-logo"><a href="https://' +
+        '</title> <style rel="stylesheet"> *{margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; text-decoration: none; border: none; outline: none;}body{}.mail{max-width: 600px;}.mail-img{display: block; width: 30px; border-radius: 6px;}.mail-title{margin-top: 1rem; font-size: 16px; margin-bottom: 1rem;}.mail-desc{margin: 1rem 0;}.mail-warning{margin-top: 1rem;}.mail-copyright{margin-top: 1rem;}</style> </head> <body> <div class="mail"> <img src="https://' +
         config.env.URL_UI +
-        '" target="_blank" rel="referrer"><img src="https://kaciriyosun.com/wp-content/uploads/2023/10/kaciriyosun.png" alt="logo"></a></div><h1>E-Posta Adresini Onayla</h1><div class="p">Hi<span class="username">' +
+        '/favicon.ico" alt="devchain" class="mail-img"/> <h1 class="mail-title"> Welcome to ' +
+        config.env.URL_UI +
+        ', please confirm your email. </h1> <div class="mail-value"> Account: <span class="username">' +
         payload.username +
-        '</span></div><div class="p">Lütfen aşşağıdaki butona basarak e-posta adresinizi onaylayınız</div><div class="p subtext">Eğer ' +
-        config.env.URL_UI +
-        ' adresine kayıt olmadıysanız bu e-postayı dikkate almayın</div><div class="mainbutton-wrapper"><a href="' +
+        '</span> </div><div class="mail-value"> IP Address: <span class="ip">' +
+        payload.ip +
+        '</span> </div><div class="mail-value"> Date: <span class="date">' +
+        payload.date +
+        '</span> </div><div class="mail-desc"> Please confirm the e-mail belov by clicking the hyperlink </div><a href="' +
         payload.link +
-        '" target="_blank" rel="referrer" class="mainbutton">E-Postamı Onayla</a></div><footer class="footer">© 2023 ' +
+        '" target="_blank" rel="referrer" class="mail-button" >' +
+        payload.link +
+        '</a > <div class="mail-warning"> If you didn\'t signup to ' +
         config.env.URL_UI +
-        ' | All rights reserved.</footer></div></section></body></html>'
+        ', you can ignore this email </div><div class="mail-copyright"> © 2023 ' +
+        config.env.URL_UI +
+        ' | All rights reserved. </div></div></body></html>'
       );
 
     case 'password-reset':
       return (
-        '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"><title>' +
+        '<!DOCTYPE html><html lang="en"> <head> <meta charset="UTF-8"/> <meta http-equiv="X-UA-Compatible" content="IE=edge"/> <meta name="viewport" content="width=device-width,initial-scale=1"/> <title>' +
         config.env.URL_UI +
-        '</title><style rel="stylesheet">*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;text-decoration:none}body{max-width:520px}.content-area{border:1px solid #dbdbdb;border-radius:5px;max-width:500px}.main-logo{width:100%;position:relative}.main-logo>a{background-color:#e2dacd;display:block;width:100%;height:70px;text-align:center;border-radius:4px;font-weight:700;color:#363636;font-size:20px;position:relative;display:block}.main-logo>a>img{display:block;height:60%;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}.content-area>h1{margin:2rem 2rem 0 2rem;font-size:18px;text-align:center}.content-area>.p{margin:2rem 2rem 0 2rem;text-align:center;font-size:14px}.mainbutton-wrapper{text-align:center;margin:2rem}.mainbutton{text-decoration:none;font-weight:700;color:#e2dacd;background-color:#002746;border-radius:4px;font-weight:700;padding:.6rem 1.4rem}.subtext{font-size:12px}.p>.username{font-weight:700}.footer{text-align:center;margin:2rem;font-size:12px}</style></head><body><section class="section"><div class="content-area"><div class="main-logo"><a href="https://' +
+        '</title> <style rel="stylesheet"> *{margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; text-decoration: none; border: none; outline: none;}body{}.mail{max-width: 600px;}.mail-img{display: block; width: 30px; border-radius: 6px;}.mail-title{margin-top: 1rem; font-size: 16px; margin-bottom: 1rem;}.mail-desc{margin: 1rem 0;}.mail-warning{margin-top: 1rem;}.mail-copyright{margin-top: 1rem;}</style> </head> <body> <div class="mail"> <img src="https://' +
         config.env.URL_UI +
-        '" target="_blank" rel="referrer"><img src="https://kaciriyosun.com/wp-content/uploads/2023/10/kaciriyosun.png" alt="logo"></a></div><h1>Şifre Sıfırlama</h1><div class="p">Hi<span class="username">' +
+        '/favicon.ico" alt="devchain" class="mail-img"/> <h1 class="mail-title"> Welcome to ' +
+        config.env.URL_UI +
+        ', please reset your password. </h1> <div class="mail-value"> Account: <span class="username">' +
         payload.username +
-        '</span></div><div class="p">Aşşağıdaki butona basarak şifrenizi sıfırlayabilirsiniz</div><div class="p subtext">Eğer bu işlemi siz yapmadıysanız bu e-postayı dikkate almayın</div><div class="mainbutton-wrapper"><a href="' +
+        '</span> </div><div class="mail-value"> IP Address: <span class="ip">' +
+        payload.ip +
+        '</span> </div><div class="mail-value"> Date: <span class="date">' +
+        payload.date +
+        '</span> </div><div class="mail-desc"> Please reset your password by clicking the hyperlink belov</div><a href="' +
         payload.link +
-        '" target="_blank" rel="referrer" class="mainbutton">Şifremi Sıfırla</a></div><footer class="footer">© 2023 ' +
+        '" target="_blank" rel="referrer" class="mail-button" >' +
+        payload.link +
+        '</a > <div class="mail-warning"> If you didn\'t send this request, you can ignore this email </div><div class="mail-copyright"> © 2023 ' +
         config.env.URL_UI +
-        ' | All rights reserved.</footer></div></section></body></html>'
+        ' | All rights reserved. </div></div></body></html>'
       );
 
-    case 'new-ip':
-      return (
-        '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"><title>' +
-        config.env.URL_UI +
-        '</title><style rel="stylesheet">*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;text-decoration:none}body{max-width:520px}.content-area{border:1px solid #dbdbdb;border-radius:5px;max-width:500px}.main-logo{width:100%;position:relative}.main-logo>a{background-color:#e2dacd;display:block;width:100%;height:70px;text-align:center;border-radius:4px;font-weight:700;color:#363636;font-size:20px;position:relative;display:block}.main-logo>a>img{display:block;height:60%;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}.content-area>h1{margin:2rem 2rem 0 2rem;font-size:18px;text-align:center}.content-area>.p{margin:2rem 2rem 0 2rem;text-align:center;font-size:14px}.mainbutton-wrapper{text-align:center;margin:2rem}.mainbutton{text-decoration:none;font-weight:700;color:#e2dacd;background-color:#002746;border-radius:4px;font-weight:700;padding:.6rem 1.4rem}.subtext{font-size:12px}.p>.username{font-weight:700}.footer{text-align:center;margin:2rem;font-size:12px}</style></head><body><section class="section"><div class="content-area"><div class="main-logo"><a href="https://' +
-        config.env.URL_UI +
-        '" target="_blank" rel="referrer"><img src="https://kaciriyosun.com/wp-content/uploads/2023/10/kaciriyosun.png" alt="logo"></a></div><h1>E-Posta Adresini Onayla</h1><div class="p">Hi<span class="username">' +
-        payload.username +
-        '</span></div><div class="p">Lütfen aşşağıdaki butona basarak e-posta adresinizi onaylayınız</div><div class="p subtext">Eğer ' +
-        config.env.URL_UI +
-        ' adresine kayıt olmadıysanız bu e-postayı dikkate almayın</div><div class="mainbutton-wrapper"><a href="' +
-        payload.link +
-        '" target="_blank" rel="referrer" class="mainbutton">E-Postamı Onayla</a></div><footer class="footer">© 2023 ' +
-        config.env.URL_UI +
-        ' | All rights reserved.</footer></div></section></body></html>'
-      );
     default:
       return '';
   }
@@ -1206,199 +1062,20 @@ export function create_subscription_email_doc(credentials: any): object {
   return doc;
 }
 
-// SETTINGS VALIDATOR
+///////////////////////
+// SETTINGS UTILS
+///////////////////////
 export class validator_settings_init {
   private options: any;
 
   constructor(options: any) {
     this.options = options;
   }
-
-  async edit_banners(credentials: any): Promise<void> {
-    const err = { section: 'settings', type: 'banners-edit' };
-
-    if (!credentials.banners) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (typeof credentials.banners !== config.types.object) {
-      throw {
-        message: 'invalid banners data',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!Array.isArray(credentials.banners)) {
-      throw {
-        message: 'invalid banners data',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    for (let i: number = 0; i < credentials.banners.length; i++) {
-      if (
-        typeof credentials.banners[i].img !== config.types.string ||
-        typeof credentials.banners[i].src !== config.types.string
-      ) {
-        throw {
-          message: 'img or src props are invalid',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (
-        credentials.banners[i].img.length > 100 ||
-        credentials.banners[i].src.length > 100
-      ) {
-        throw {
-          message: 'props are too long',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (!validator.isURL(credentials.banners[i].src)) {
-        throw {
-          message: 'img or src is invalid',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (credentials.banners[i].img_base64) {
-        validator_common_init.base64(credentials.banners[i].img_base64, err);
-      }
-    }
-  }
-
-  async edit_campaigns(credentials: any): Promise<void> {
-    const err = { section: 'settings', type: 'campaigns-edit' };
-
-    if (!credentials.campaigns) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (typeof credentials.campaigns !== config.types.object) {
-      throw {
-        message: 'invalid campaigns data',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!Array.isArray(credentials.campaigns)) {
-      throw {
-        message: 'invalid campaigns data',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    for (let i: number = 0; i < credentials.campaigns.length; i++) {
-      if (
-        typeof credentials.campaigns[i].img !== config.types.string ||
-        typeof credentials.campaigns[i].src !== config.types.string ||
-        typeof credentials.campaigns[i].message !== config.types.string
-      ) {
-        throw {
-          message: 'img or src or message props are invalid',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (
-        credentials.campaigns[i].img.length > 100 ||
-        credentials.campaigns[i].src.length > 100 ||
-        credentials.campaigns[i].message.length > 200
-      ) {
-        throw {
-          message: 'props are too long',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (!validator.isURL(credentials.campaigns[i].src)) {
-        throw {
-          message: 'img or src is invalid',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (credentials.campaigns[i].img_base64) {
-        validator_common_init.base64(credentials.campaigns[i].img_base64, err);
-      }
-    }
-  }
-
-  async edit_notifications(credentials: any): Promise<void> {
-    const err = { section: 'settings', type: 'notifications-edit' };
-
-    if (!credentials.notifications) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (typeof credentials.notifications !== config.types.object) {
-      throw {
-        message: 'invalid notifications data',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!Array.isArray(credentials.notifications)) {
-      throw {
-        message: 'invalid notifications data',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    for (let i: number = 0; i < credentials.notifications.length; i++) {
-      if (
-        typeof credentials.notifications[i].img !== config.types.string ||
-        typeof credentials.notifications[i].src !== config.types.string ||
-        typeof credentials.notifications[i].message !== config.types.string
-      ) {
-        throw {
-          message: 'img or src or message props are invalid',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (
-        credentials.notifications[i].img.length > 100 ||
-        credentials.notifications[i].src.length > 100 ||
-        credentials.notifications[i].message.length > 200
-      ) {
-        throw {
-          message: 'props are too long',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (!validator.isURL(credentials.notifications[i].src)) {
-        throw {
-          message: 'img or src is invalid',
-          code: `${err.section}:${err.type}`,
-        };
-      }
-
-      if (credentials.notifications[i].img_base64) {
-        validator_common_init.base64(
-          credentials.notifications[i].img_base64,
-          err
-        );
-      }
-    }
-  }
 }
 
-/////////////////////////////////////
-// BLOCKCHAIN VALIDATOR
-////////////////////////////////////
+///////////////////////
+// BLOCKCHAIN UTILS
+///////////////////////
 export class validator_blockchain_init {
   private options: any;
 
@@ -1409,19 +1086,23 @@ export class validator_blockchain_init {
   async get_tokens(credentials: any, chains: any): Promise<any> {
     const err = { section: 'blockchain', type: 'tokens-get' };
 
-    if (!credentials) {
+    if (!credentials.chain_id) {
       throw {
         message: 'missing credentials',
         code: `${err.section}:${err.type}`,
       };
     }
 
-    if (
-      credentials.chain_id &&
-      !Object.keys(chains).includes(credentials.chain_id)
-    ) {
+    if (!Number(credentials.chain_id)) {
       throw {
-        message: 'unsupported chain',
+        message: 'invalid chain id',
+        code: `${err.section}:${err.type}`,
+      };
+    }
+
+    if (!Object.keys(chains).includes(credentials.chain_id)) {
+      throw {
+        message: 'unsupported chain id',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1430,23 +1111,16 @@ export class validator_blockchain_init {
   async factory_get(credentials: any, factory: any): Promise<any> {
     const err = { section: 'blockchain', type: 'factory-get' };
 
-    if (!credentials) {
+    if (!credentials.type) {
       throw {
         message: 'missing credentials',
         code: `${err.section}:${err.type}`,
       };
     }
 
-    if (!credentials.type) {
-      throw {
-        message: 'missing token type',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
     if (credentials.origin !== 'https://app.' + config.env.URL_UI) {
       throw {
-        message: 'Something went wrong',
+        message: 'something went wrong',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1466,23 +1140,16 @@ export class validator_blockchain_init {
   ): Promise<any> {
     const err = { section: 'blockchain', type: 'factory-create' };
 
-    if (!credentials) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
     if (credentials.origin !== 'https://' + config.env.URL_UI) {
       throw {
-        message: 'Something went wrong',
+        message: 'something went wrong',
         code: `${err.section}:${err.type}`,
       };
     }
 
-    if (!credentials.type) {
+    if (!credentials.type || !credentials.chain_id) {
       throw {
-        message: 'missing token type',
+        message: 'missing credentials',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1494,25 +1161,23 @@ export class validator_blockchain_init {
       };
     }
 
-    if (!Object.keys(chains).includes(credentials.chain_id)) {
-      /**
-       *       throw {
-        message: 'unsupported chain',
+    if (!Number(credentials.chain_id)) {
+      throw {
+        message: 'invalid chain id',
         code: `${err.section}:${err.type}`,
       };
-       */
+    }
+
+    if (!Object.keys(chains).includes(credentials.chain_id)) {
+      throw {
+        message: 'unsupported chain id',
+        code: `${err.section}:${err.type}`,
+      };
     }
   }
 
   async audits_create(credentials: any): Promise<any> {
     const err = { section: 'blockchain', type: 'audits-create' };
-
-    if (!credentials) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
 
     if (!credentials.address || !credentials.chain_id) {
       throw {
@@ -1537,7 +1202,7 @@ export class validator_blockchain_init {
 
     if (!res.data.result[credentials.address.toLowerCase()]) {
       throw {
-        message: 'Chain might be wrong for this address',
+        message: 'invalid chain for address',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1545,13 +1210,6 @@ export class validator_blockchain_init {
 
   async swap_quote(credentials: any, chains: any): Promise<any> {
     const err = { section: 'blockchain', type: 'swap-quote' };
-
-    if (!credentials) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
 
     if (!Object.keys(chains).includes(credentials.chain_id)) {
       throw {
@@ -1564,13 +1222,6 @@ export class validator_blockchain_init {
   async swap_price(credentials: any, chains: any): Promise<any> {
     const err = { section: 'blockchain', type: 'swap-price' };
 
-    if (!credentials) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
     if (!Object.keys(chains).includes(credentials.chain_id)) {
       throw {
         message: 'unsupported chain',
@@ -1581,13 +1232,6 @@ export class validator_blockchain_init {
 
   async seed_sales_create(credentials: any): Promise<any> {
     const err = { section: 'blockchain', type: 'seedsales-create' };
-
-    if (!credentials) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
 
     if (!credentials.hash || !credentials.from || !credentials.value) {
       throw {
@@ -1602,7 +1246,7 @@ export class validator_blockchain_init {
       typeof credentials.value !== config.types.string
     ) {
       throw {
-        message: 'missing credentials',
+        message: 'invalid credentials',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1623,16 +1267,9 @@ export class validator_blockchain_init {
       }
     );
 
-    if (!catpcha_response) {
-      throw {
-        message: 'Captcha didnt succeed',
-        type: `${err.section}:${err.type}`,
-      };
-    }
-
     if (!catpcha_response.data.success) {
       throw {
-        message: 'Captcha didnt succeed',
+        message: 'captcha fail',
         type: `${err.section}:${err.type}`,
       };
     }
@@ -1640,28 +1277,21 @@ export class validator_blockchain_init {
 
   async seed_sales_get(credentials: any): Promise<any> {
     const err = { section: 'blockchain', type: 'seedsales-get' };
-
-    if (!credentials) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
   }
 
   async seed_sales_edit(credentials: any): Promise<any> {
     const err = { section: 'blockchain', type: 'seedsales-edit' };
 
-    if (!credentials) {
+    if (!credentials._id) {
       throw {
         message: 'missing credentials',
         code: `${err.section}:${err.type}`,
       };
     }
 
-    if (!credentials._id || !ObjectId.isValid(credentials._id)) {
+    if (!ObjectId.isValid(credentials._id)) {
       throw {
-        message: 'missing object id',
+        message: 'invalid credentials',
         code: `${err.section}:${err.type}`,
       };
     }
@@ -1691,122 +1321,13 @@ export function create_seed_sale_doc(
   return doc;
 }
 
-export class validator_extera_init {
-  private options: options_i;
-
-  constructor(options: options_i) {
-    this.options = options;
-  }
-
-  async create_form(credentials: any): Promise<any> {
-    const err = { section: 'extera', type: 'form-create' };
-
-    if (!credentials) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    credentials.name = UTILS_COMMON.str_remove_space(credentials.name);
-    credentials.email = UTILS_COMMON.str_remove_space(credentials.email);
-    credentials.phone = UTILS_COMMON.str_remove_space(credentials.phone);
-    credentials.bio = UTILS_COMMON.str_remove_space(credentials.bio);
-
-    if (
-      typeof credentials.name !== config.types.string ||
-      typeof credentials.email !== config.types.string ||
-      typeof credentials.phone !== config.types.string ||
-      typeof credentials.bio !== config.types.string
-    ) {
-      throw {
-        message: 'invalid credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!validator.isAscii(credentials.name)) {
-      throw {
-        message: 'invalid name',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (credentials.name.length > 200) {
-      throw {
-        message: 'long credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!validator.isMobilePhone(credentials.phone)) {
-      throw {
-        message: 'invalid phone number',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!validator.isEmail(credentials.email)) {
-      throw {
-        message: 'invalid email',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    const existing_form: any = await this.options.db.extera_forms.findOne({
-      email: credentials.email,
-    });
-
-    if (existing_form) {
-      throw {
-        message: 'existing email',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-  }
-
-  async get_forms(credentials: any): Promise<any> {
-    const err = { section: 'extera', type: 'form-get' };
-
-    if (!credentials) {
-      throw {
-        message: 'missing credentials',
-        code: `${err.section}:${err.type}`,
-      };
-    }
-
-    if (!credentials.uid) {
-      credentials.uid = '';
-    }
-  }
-}
-
-export async function create_extera_form_doc(
-  credentials: any,
-  options: options_i
-): Promise<any> {
-  const doc: any = {
-    // auth validator signup configures extra spaces and lowercase chars, you dont have to worry
-    name: UTILS_COMMON.str_remove_space(credentials.name),
-    username: UTILS_COMMON.str_remove_space(credentials.username).toLowerCase(),
-    email: UTILS_COMMON.str_remove_space(credentials.email).toLowerCase(),
-    phone: UTILS_COMMON.str_remove_space(credentials.phone),
-    bio: UTILS_COMMON.str_remove_space(credentials.bio),
-    ip: credentials.ip,
-
-    created_at: new Date(),
-    updated_at: new Date(),
-  };
-
-  return doc;
-}
-
 export default {
   validator_common_init,
   validator_auth_init,
   create_session,
   generate_email_verification_token,
   generate_password_reset_token,
+  generate_api_key,
   create_user_doc,
   return_user_profile,
   validator_mail_init,
@@ -1815,6 +1336,4 @@ export default {
   validator_settings_init,
   validator_blockchain_init,
   create_seed_sale_doc,
-  validator_extera_init,
-  create_extera_form_doc,
 };

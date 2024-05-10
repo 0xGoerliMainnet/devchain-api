@@ -1,11 +1,7 @@
 'use strict';
 
 // MODULES
-import axios from 'axios';
 import { createClient } from 'redis';
-
-// UTILS
-import UTILS_COMMON from '../utils/common';
 
 async function load_redis(options: any) {
   const client = createClient();
@@ -26,9 +22,7 @@ async function load_redis(options: any) {
 
   if (!settings) {
     settings = JSON.stringify({
-      banners: [{ img: '', src: '' }],
-      campaigns: [{ img: '', src: '', message: '' }],
-      notifications: [{ img: '', src: '', message: '' }],
+      test: '1',
     });
 
     await client.set('settings', settings);

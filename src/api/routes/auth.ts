@@ -6,14 +6,14 @@ import { FastifyInstance } from 'fastify';
 import { routes_i, services_i } from 'interfaces/api';
 
 // API > MIDDLEWARE
-import mw from '../../middleware';
-import mw_auth from '../../middleware/auth';
+import mw from '../middleware';
+import mw_auth from '../middleware/auth';
 
 // API > SCHEMAS
-import schemas from '../../schemas';
+import schemas from '../schemas';
 
 // CONFIG
-import config from '../../../config';
+import config from '../../config';
 
 function bind_auth_routes(
   server: FastifyInstance,
@@ -51,12 +51,6 @@ function bind_auth_routes(
     profile: {
       method: 'GET',
       url: '/v1' + config.endpoints.auth_profile,
-      schema: {
-        querystring: {
-          token: { type: config.types.string },
-        },
-      },
-      preValidation: mw.prevalidation(null, options),
       handler: async function (request: any, reply: any) {
         const credentials: any = {
           sid: request.cookies[config.env.SESSION_NAME],
@@ -80,11 +74,7 @@ function bind_auth_routes(
     profile_edit: {
       method: 'PUT',
       url: '/v1' + config.endpoints.auth_profile,
-      schema: {
-        response: {
-          200: schemas.user,
-        },
-      },
+
       preValidation: mw.prevalidation(mw_auth.is_auth, options),
       handler: async function (request: any, reply: any) {
         const credentials: any = { ...request.body, user: request.user };
@@ -104,12 +94,7 @@ function bind_auth_routes(
     signup: {
       method: 'POST',
       url: '/v1' + config.endpoints.auth_signup,
-      schema: {
-        response: {
-          200: schemas.user,
-        },
-      },
-      preValidation: mw.prevalidation(null, options),
+
       handler: async function (request: any, reply: any) {
         const credentials = {
           ...request.body,
@@ -145,12 +130,6 @@ function bind_auth_routes(
     signin: {
       method: 'POST',
       url: '/v1' + config.endpoints.auth_signin,
-      schema: {
-        response: {
-          200: schemas.user,
-        },
-      },
-      preValidation: mw.prevalidation(null, options),
       handler: async function (request: any, reply: any) {
         const credentials = {
           ...request.body,
@@ -202,12 +181,7 @@ function bind_auth_routes(
     password_reset: {
       method: 'POST',
       url: '/v1' + config.endpoints.auth_password_reset,
-      schema: {
-        response: {
-          200: schemas.user,
-        },
-      },
-      preValidation: mw.prevalidation(null, options),
+
       handler: async function (request: any, reply: any) {
         const credentials = {
           ...request.body,
@@ -229,11 +203,7 @@ function bind_auth_routes(
     password_change: {
       method: 'POST',
       url: '/v1' + config.endpoints.auth_password_change,
-      schema: {
-        response: {
-          200: schemas.user,
-        },
-      },
+
       preValidation: mw.prevalidation(mw_auth.is_auth, options),
       handler: async function (request: any, reply: any) {
         const credentials: any = {
@@ -256,11 +226,7 @@ function bind_auth_routes(
     email_change: {
       method: 'POST',
       url: '/v1' + config.endpoints.auth_email_change,
-      schema: {
-        response: {
-          200: schemas.user,
-        },
-      },
+
       preValidation: mw.prevalidation(mw_auth.is_auth, options),
       handler: async function (request: any, reply: any) {
         const credentials: any = {
@@ -283,7 +249,7 @@ function bind_auth_routes(
     email_verify: {
       method: 'GET',
       url: '/v1' + config.endpoints.auth_email_verify,
-      preValidation: mw.prevalidation(null, options),
+
       handler: async function (request: any, reply: any) {
         try {
           const user = await services.auth.verify_email(request.params.token);

@@ -5,14 +5,14 @@ import { FastifyInstance } from 'fastify';
 import { routes_i, services_i } from 'interfaces/api';
 
 // API > MIDDLEWARE
-import mw from '../../middleware';
-import mw_auth from '../../middleware/auth';
+import mw from '../middleware';
+import mw_auth from '../middleware/auth';
 
 // API > SCHEMAS
-import schemas from '../../schemas';
+import schemas from '../schemas';
 
 // CONFIG
-import config from '../../../config';
+import config from '../../config';
 
 function bind_mail_routes(
   server: FastifyInstance,

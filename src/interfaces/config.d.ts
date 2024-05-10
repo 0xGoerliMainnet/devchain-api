@@ -21,29 +21,8 @@ export default interface config_i {
     readonly mail_subscriptions: string;
 
     readonly settings: string;
-    readonly settings_banners: string;
-    readonly settings_campaigns: string;
-    readonly settings_notifications: string;
-    readonly settings_faq: string;
-
-    readonly stores: string;
-    readonly stores_store: string;
-
-    readonly products: string;
-    readonly products_favs: string;
 
     // BLOCKCHAIN ENDPOINTS
-
-    // GoPlusLabs
-    readonly blockchain_token_security: string;
-    readonly blockchain_address_security: string;
-    readonly blockchain_approval_security: string;
-    readonly blockchain_nft_security: string;
-    readonly blockchain_dapp_security: string;
-    readonly blockchain_pishing_site: string;
-    readonly blockchain_rugpull_detecting: string;
-    readonly blockchain_input_decode: string;
-
     readonly blockchain_tokens: string;
     readonly blockchain_factory: string;
     readonly blockchain_audits: string;
@@ -53,8 +32,6 @@ export default interface config_i {
     readonly blockchain_swap_price: string;
 
     readonly blockchain_seed_sales: string;
-
-    readonly extera_forms: string;
   };
   readonly env: {
     readonly PORT: string;
@@ -74,8 +51,8 @@ export default interface config_i {
     readonly PERM_USER: string;
 
     readonly EMAIL_HOST: string;
-    readonly EMAIL_NO_REPLY_USERNAME: string;
-    readonly EMAIL_NO_REPLY_PASSWORD: string;
+    readonly EMAIL_USERNAME: string;
+    readonly EMAIL_PASSWORD: string;
 
     readonly URL_API: string;
     readonly URL_UI: string;

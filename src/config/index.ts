@@ -38,41 +38,16 @@ const config: config_i = {
     mail_subscriptions: '/email-subscriptions',
 
     settings: '/settings',
-    settings_banners: '/settings/banners',
-    settings_campaigns: '/settings/campaigns',
-    settings_notifications: '/settings/notifications',
-    settings_faq: '/settings/faq',
-
-    stores: '/stores',
-    stores_store: '/stores/:name',
-
-    products: '/products',
-    products_favs: '/products/favs',
 
     // BLOCKCHAIN ENDPOINTS
-
-    // GoPlusLabs
-    blockchain_token_security: '/token_security/:chain_id',
-    blockchain_address_security: '/address_security/:address',
-    blockchain_approval_security: '/approval_security/:chain_id',
-    blockchain_nft_security: '/nft_security/:chain_id',
-    blockchain_dapp_security: '/dapp_security',
-    blockchain_pishing_site: '/pishing_site',
-    blockchain_rugpull_detecting: '/rugpull_detecting/:chain_id',
-    blockchain_input_decode: '/input_decode',
-
     blockchain_tokens: '/tokens',
     blockchain_audits: '/audits',
     blockchain_factory: '/factory',
-
     // 0x API
     blockchain_swap_quote: '/swap/quote',
     blockchain_swap_price: '/swap/price',
 
     blockchain_seed_sales: '/seed-sales',
-
-    // EXTERA
-    extera_forms: '/extera/forms',
   },
   env: {
     PORT: process.env.PORT || '3000',
@@ -93,8 +68,8 @@ const config: config_i = {
     PERM_USER: process.env.PERM_USER || '',
 
     EMAIL_HOST: process.env.EMAIL_HOST || '',
-    EMAIL_NO_REPLY_USERNAME: process.env.EMAIL_NO_REPLY_USERNAME || '',
-    EMAIL_NO_REPLY_PASSWORD: process.env.EMAIL_NO_REPLY_PASSWORD || '',
+    EMAIL_USERNAME: process.env.EMAIL_USERNAME || '',
+    EMAIL_PASSWORD: process.env.EMAIL_PASSWORD || '',
 
     URL_API: process.env.URL_API || '',
     URL_UI: process.env.URL_UI || '',

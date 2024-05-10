@@ -6,7 +6,7 @@ import config from '../config';
 const schema = {
   name: 'users',
   bsonType: config.types.object,
-  required: ['name', 'username', 'email', 'phone'],
+  required: ['username', 'email'],
   unique_props: ['username', 'email'],
   properties: {
     name: {
@@ -51,10 +51,6 @@ const schema = {
       bsonType: config.types.string,
     },
 
-    favs: {
-      bsonType: config.types.string,
-    },
-
     ref_code: {
       bsonType: config.types.string,
     },
@@ -64,6 +60,10 @@ const schema = {
 
     api_key: {
       bsonType: [config.types.string, config.types.null],
+    },
+
+    wallet_address: {
+      bsonType: config.types.string,
     },
 
     role: {

@@ -28,8 +28,8 @@ class service_mail_init {
       port: 465,
       secure: true,
       auth: {
-        user: config.env.EMAIL_NO_REPLY_USERNAME,
-        pass: config.env.EMAIL_NO_REPLY_PASSWORD,
+        user: config.env.EMAIL_USERNAME,
+        pass: config.env.EMAIL_PASSWORD,
       },
     });
 
@@ -57,7 +57,7 @@ class service_mail_init {
     });
 
     const data: object = {
-      from: config.env.EMAIL_NO_REPLY_USERNAME,
+      from: config.env.EMAIL_USERNAME,
       to: payload.email, // to property represents the emails that will be sent emails to.
       subject:
         'Welcome to ' + config.env.URL_UI + ', Please Confirm your email',
@@ -100,7 +100,7 @@ class service_mail_init {
     });
 
     const data: object = {
-      from: config.env.EMAIL_NO_REPLY_USERNAME,
+      from: config.env.EMAIL_USERNAME,
       to: email, // to property represents the emails that will be sent emails to.
       subject:
         'Welcome back, ' + config.env.URL_UI + ', Please Confirm your email',
@@ -139,7 +139,7 @@ class service_mail_init {
     });
 
     const data: object = {
-      from: config.env.EMAIL_NO_REPLY_USERNAME,
+      from: config.env.EMAIL_USERNAME,
       to: email, // to property represents the emails that will be sent emails to.
       subject: config.env.URL_UI + ' Password Reset',
       html,
@@ -151,7 +151,7 @@ class service_mail_init {
   async send_emails(credentials: any): Promise<void> {
     for (let i: number = 0; i < credentials.emails.length; i++) {
       const data: object = {
-        from: credentials.from || config.env.EMAIL_NO_REPLY_USERNAME,
+        from: credentials.from || config.env.EMAIL_USERNAME,
         to: credentials.emails[i], // to property represents the emails that will be sent emails to.
         subject: credentials.subject,
         html: credentials.html,
